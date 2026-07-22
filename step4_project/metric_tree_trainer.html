@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр: Дерево метрик</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== DESIGN TOKENS — change these to rebrand ===== */
+:root {
+  --bg:             #1e2027;
+  --bg-surface:     #282a31;
+  --bg-elevated:    #32343c;
+  --bg-hover:       #3a3c45;
+  --text:           #ffffff;
+  --text-sec:       rgba(255,255,255,.6);
+  --text-muted:     rgba(255,255,255,.32);
+  --accent:         #ff5533;
+  --accent-hover:   #ff6b4a;
+  --color-leading:  #4ecdc4;
+  --color-calc:     #a78bfa;
+  --color-lagging:  #ff5533;
+  --bg-leading:     rgba(78,205,196,.10);
+  --bg-calc:        rgba(167,139,250,.10);
+  --bg-lagging:     rgba(255,85,51,.10);
+  --ok:             #22c55e;
+  --warn:           #eab308;
+  --err:            #ef4444;
+  --info:           #3b82f6;
+  --edge-color:     #6b7280;
+  --node-w:         194px;
+  --port-r:         7px;
+  --radius:         12px;
+  --radius-sm:      8px;
+  --font:           'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
+button{font-family:var(--font)}
+
+/* ===== LAYOUT ===== */
+#app{display:flex;flex-direction:column;height:100vh}
+.header{display:flex;align-items:center;gap:16px;padding:10px 20px;background:var(--bg-surface);border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.header-brand{display:flex;align-items:baseline;gap:8px}
+.header-title{font-size:16px;font-weight:700}
+.header-tag{font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.case-select{background:var(--bg-elevated);color:var(--text);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-sm);padding:7px 12px;font-size:13px;font-family:var(--font);cursor:pointer;min-width:240px}
+.case-select:focus{outline:2px solid var(--accent);outline-offset:-2px}
+.case-select option{background:var(--bg-surface);color:var(--text)}
+.legend{display:flex;gap:14px;font-size:11px;color:var(--text-sec);margin-left:auto}
+.legend-item{display:flex;align-items:center;gap:5px}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+.case-bar{padding:6px 20px 8px;font-size:12px;color:var(--text-sec);background:var(--bg);border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0;line-height:1.4}
+.case-bar .dir-hint{color:var(--text-muted)}
+
+.workspace{display:flex;flex:1;overflow:hidden}
+
+/* ===== PALETTE ===== */
+.palette{width:260px;background:var(--bg-surface);border-right:1px solid rgba(255,255,255,.06);overflow-y:auto;padding:12px;flex-shrink:0;scrollbar-width:thin;scrollbar-color:var(--bg-elevated) transparent}
+.pal-section{margin-bottom:16px}
+.pal-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:4px 8px;margin-bottom:6px;border-radius:4px}
+.pal-title.leading{color:var(--color-leading);background:var(--bg-leading)}
+.pal-title.calc{color:var(--color-calc);background:var(--bg-calc)}
+.pal-title.lagging{color:var(--color-lagging);background:var(--bg-lagging)}
+.pal-card{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-sm);cursor:grab;transition:background .15s;margin-bottom:3px}
+.pal-card:hover{background:var(--bg-elevated)}
+.pal-card.used{opacity:.3;pointer-events:none;cursor:default}
+.pal-card-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pal-card-name{font-size:12px;font-weight:600;line-height:1.2}
+.pal-card-abbr{font-size:10px;color:var(--text-sec)}
+@keyframes hint-flash{0%,100%{background:transparent}50%{background:rgba(255,85,51,.2)}}
+.pal-card.hint{animation:hint-flash .45s ease 3}
+
+/* ===== CANVAS ===== */
+.canvas-wrap{flex:1;position:relative;overflow:hidden;background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.025) 1px,transparent 0) 0 0/24px 24px}
+.canvas-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:var(--text-muted);font-size:14px;pointer-events:none;z-index:0;line-height:1.6;transition:opacity .3s}
+.canvas-hint svg{margin-bottom:8px;opacity:.3}
+.edge-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.edge-hit{pointer-events:all;cursor:pointer;stroke-linecap:round}
+.edge-line{transition:stroke .15s,stroke-width .15s,filter .15s}
+.edge-group:hover .edge-line{stroke:var(--accent);stroke-width:2.5}
+.edge-group.selected .edge-line{stroke:var(--accent);stroke-width:3;filter:drop-shadow(0 0 6px rgba(255,85,51,.5))}
+.edge-group.correct .edge-line{stroke:var(--ok);stroke-width:2.5}
+.edge-group.invalid .edge-line{stroke:var(--err);stroke-width:2.5;stroke-dasharray:6 3}
+.temp-edge{stroke-dasharray:8 4;animation:dash .5s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-12}}
+
+.node-layer{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.node{pointer-events:all}
+
+/* ===== NODES ===== */
+.node{position:absolute;width:var(--node-w);background:var(--bg-surface);border-radius:var(--radius-sm);box-shadow:0 2px 12px rgba(0,0,0,.25);cursor:grab;user-select:none;z-index:2;transition:box-shadow .15s,outline-color .15s;outline:2px solid transparent;outline-offset:2px}
+.node:hover{box-shadow:0 4px 20px rgba(0,0,0,.35)}
+.node.selected{outline-color:var(--accent)}
+.node.dragging{cursor:grabbing;z-index:10;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.node-body{padding:10px 14px;border-left:4px solid var(--mc);border-radius:var(--radius-sm)}
+.node-name{font-size:12px;font-weight:600;line-height:1.3}
+.node-abbr{font-size:10px;color:var(--text-sec);margin-top:1px}
+
+/* ===== PORTS ===== */
+.port{position:absolute;width:calc(var(--port-r)*2);height:calc(var(--port-r)*2);border-radius:50%;left:50%;transform:translateX(-50%);z-index:5;cursor:default;transition:transform .12s,box-shadow .12s;background:var(--bg-surface);border:2px solid var(--mc)}
+.port-in{top:calc(-1*var(--port-r));cursor:default;opacity:.55}          /* 7.2: вход — не источник связи, не выглядит «кликабельным» */
+.port-out{bottom:calc(-1*var(--port-r));cursor:crosshair}               /* связь тянется только отсюда, вниз */
+.port-out:hover{transform:translateX(-50%) scale(1.4);box-shadow:0 0 10px var(--mc)}
+.port.connected{background:var(--mc);opacity:1}
+.port-in.glow{transform:translateX(-50%) scale(1.5);box-shadow:0 0 14px var(--ok);border-color:var(--ok)}   /* цель при протягивании связи */
+
+/* ===== TOOLBAR ===== */
+.toolbar{display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--bg-surface);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0}
+.toolbar-info{font-size:12px;color:var(--text-sec)}
+.btn{padding:8px 20px;border-radius:var(--radius-sm);border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-primary:disabled{opacity:.4;cursor:default}
+.btn-sec{background:var(--bg-elevated);color:var(--text)}
+.btn-sec:hover{background:var(--bg-hover)}
+.spacer{flex:1}
+
+/* ===== RESULTS OVERLAY ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.show{opacity:1;pointer-events:all}
+.results{background:var(--bg-surface);border-radius:var(--radius);padding:28px;max-width:580px;width:92%;max-height:82vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5);scrollbar-width:thin;scrollbar-color:var(--bg-elevated) transparent}
+.res-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.res-icon{font-size:34px;line-height:1}
+.res-title{font-size:18px;font-weight:700}
+.res-sub{font-size:12px;color:var(--text-sec);margin-top:2px}
+.res-section-title{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text-sec);text-transform:uppercase;letter-spacing:.04em}
+.calc-card{background:var(--bg-elevated);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:8px}
+.calc-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.calc-dot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;color:#fff}
+.calc-dot.ok{background:var(--ok)}.calc-dot.err{background:var(--err)}.calc-dot.warn{background:var(--warn)}
+.calc-label{font-size:13px;font-weight:600}
+.calc-formula{font-size:12px;color:var(--text-sec);margin-top:4px}
+.calc-example{font-size:12px;color:var(--info);margin-top:6px;padding:6px 10px;background:rgba(59,130,246,.08);border-radius:6px;font-family:'SF Mono','Fira Code',monospace;line-height:1.5}
+.calc-err{color:var(--err);font-size:12px;margin-top:4px}
+.calc-warn{color:var(--warn);font-size:12px;margin-top:4px}
+.sandbox-msg{display:flex;align-items:start;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);margin-bottom:6px;font-size:13px;line-height:1.4}
+.sandbox-msg.s-ok{background:rgba(34,197,94,.08);color:var(--ok)}
+.sandbox-msg.s-warn{background:rgba(234,179,8,.08);color:var(--warn)}
+.sandbox-msg.s-err{background:rgba(239,68,68,.08);color:var(--err)}
+.sandbox-msg.s-info{background:rgba(59,130,246,.08);color:var(--info)}
+
+.ghost{position:fixed;z-index:1000;opacity:.75;pointer-events:none}
+@keyframes pop{0%{transform:scale(0)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+.pop{animation:pop .35s ease-out}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="header">
+    <div class="header-brand"><span class="header-title">Дерево метрик</span><span class="header-tag">тренажёр</span></div>
+    <select id="caseSelect" class="case-select"></select>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--color-leading)"></span>Опережающие</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--color-calc)"></span>Расчётные</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--color-lagging)"></span>Запаздывающие</span>
+    </div>
+  </header>
+  <div class="case-bar" id="caseBar"></div>
+  <div class="workspace">
+    <aside class="palette" id="palette"></aside>
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="canvas-hint" id="canvasHint">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><path d="M10 6.5h4.5a2 2 0 0 1 2 2V14"/></svg>
+        <div>Перетащите метрики из палитры на холст<br>и соедините их рёбрами в дерево</div>
+        <div style="margin-top:8px;font-size:11px">Двойной клик — добавить &middot; Del — удалить<br>Направление: тяните связь <b>вниз</b> — от нижнего порта карточки к верхнему порту следующей</div>
+      </div>
+      <svg class="edge-layer" id="edgeLayer">
+        <defs>
+          <marker id="aw" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 4L0 8z" fill="#6b7280"/></marker>
+          <marker id="aw-a" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 4L0 8z" fill="#ff5533"/></marker>
+          <marker id="aw-ok" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 4L0 8z" fill="#22c55e"/></marker>
+          <marker id="aw-err" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 4L0 8z" fill="#ef4444"/></marker>
+          <marker id="aw-t" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0L10 4L0 8z" fill="rgba(255,255,255,.3)"/></marker>
+        </defs>
+      </svg>
+      <div class="node-layer" id="nodeLayer"></div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <button class="btn btn-sec" id="btnClear">Очистить</button>
+    <button class="btn btn-sec" id="btnHint">Подсказка</button>
+    <span class="spacer"></span>
+    <span class="toolbar-info" id="tbInfo"></span>
+    <button class="btn btn-primary" id="btnCheck">Проверить</button>
+  </div>
+</div>
+<div class="overlay" id="overlay"><div class="results" id="resPanel"></div></div>
+
+<script>
+/* ===============================================================
+   SCORM 1.2 minimal wrapper — works without LMS
+   =============================================================== */
+const SCORM={api:null,init(){this.api=this._find(window);if(this.api)try{this.api.LMSInitialize('')}catch(e){}},done(){if(!this.api)return;try{this.api.LMSSetValue('cmi.core.lesson_status','completed');this.api.LMSCommit('')}catch(e){}},getSuspend(){if(!this.api)return null;try{return this.api.LMSGetValue('cmi.suspend_data')||null}catch(e){return null}},setSuspend(v){if(!this.api)return;try{this.api.LMSSetValue('cmi.suspend_data',v);this.api.LMSCommit('')}catch(e){}},finish(){if(this.api)try{this.api.LMSFinish('')}catch(e){}},_find(w){let n=0;while(!w.API&&w.parent!==w&&n++<10)w=w.parent;return w.API||null}};
+SCORM.init();
+window.addEventListener('beforeunload',()=>SCORM.finish());
+
+/* ===============================================================
+   CASE DATA
+   =============================================================== */
+const CASES=[
+{
+  id:'streaming',title:'1. Стриминговый сервис',
+  desc:'Вы — продакт-менеджер музыкального стримингового сервиса. Постройте дерево метрик от опережающих показателей до ежемесячного дохода (MRR).',
+  metrics:[
+    {id:'nps',name:'Индекс лояльности',abbr:'NPS — Net Promoter Score',type:'leading'},
+    {id:'influx',name:'Приток пользователей',abbr:'User Influx',type:'leading'},
+    {id:'arpu',name:'Доход на пользователя',abbr:'ARPU — Avg Revenue Per User',type:'leading'},
+    {id:'user_cost',name:'Стоимость обслуживания',abbr:'User Servicing Cost',type:'leading'},
+    {id:'churn',name:'Отток пользователей',abbr:'Churn Rate',type:'calc'},
+    {id:'mau',name:'Активные пользователи',abbr:'MAU — Monthly Active Users',type:'calc'},
+    {id:'mrr',name:'Ежемесячный доход',abbr:'MRR — Monthly Recurring Revenue',type:'lagging'},
+  ],
+  rules:{
+    churn:{req:['nps'],opt:[]},
+    mau:{req:['churn','influx'],opt:[]},
+    mrr:{req:['mau','arpu'],opt:['user_cost']},
+  },
+  calc:{
+    churn:{lbl:'NPS → Churn',formula:'Churn ≈ k / NPS (обратная зависимость)',example:'NPS = 60  →  Churn ≈ 180 / 60 = 3 % в месяц'},
+    mau:{lbl:'Churn + Influx → MAU',formula:'MAU_новый = MAU_тек × (1 − Churn) + Influx',example:'100 000 × (1 − 0,03) + 5 000 = 102 000 пользователей'},
+    mrr:{lbl:'MAU + ARPU (+ UserCost) → MRR',formula:'MRR = MAU × (ARPU − UserCost)',example:'102 000 × (500 ₽ − 100 ₽) = 40 800 000 ₽ / мес'},
+  },
+},
+{
+  id:'ecom',title:'2. Интернет-магазин',
+  desc:'Вы управляете интернет-магазином электроники. Постройте дерево от трафика и конверсии до выручки.',
+  metrics:[
+    {id:'traffic',name:'Трафик сайта',abbr:'Website Traffic',type:'leading'},
+    {id:'cr',name:'Конверсия',abbr:'CR — Conversion Rate',type:'leading'},
+    {id:'aov',name:'Средний чек',abbr:'AOV — Avg Order Value',type:'leading'},
+    {id:'csat',name:'Удовлетворённость',abbr:'CSAT — Customer Satisfaction',type:'leading'},
+    {id:'orders',name:'Количество заказов',abbr:'Orders',type:'calc'},
+    {id:'repeat',name:'Коэффициент повторных покупок',abbr:'Repeat Purchase Rate',type:'calc'},
+    {id:'revenue',name:'Выручка',abbr:'Revenue',type:'lagging'},
+  ],
+  rules:{
+    orders:{req:['traffic','cr'],opt:[]},
+    repeat:{req:['csat'],opt:[]},
+    revenue:{req:['orders','aov'],opt:['repeat']},
+  },
+  calc:{
+    orders:{lbl:'Traffic + CR → Orders',formula:'Orders = Traffic × CR',example:'500 000 × 2,5 % = 12 500 заказов'},
+    repeat:{lbl:'CSAT → Repeat Rate',formula:'RepeatRate = f(CSAT)',example:'CSAT = 85 %  →  RepeatRate ≈ 35 %'},
+    revenue:{lbl:'Orders + AOV (+ Repeat) → Revenue',formula:'Revenue = Orders × AOV × (1 + RepeatRate)',example:'12 500 × 3 000 ₽ × 1,35 = 50 625 000 ₽'},
+  },
+},
+{
+  id:'mobile',title:'3. Мобильное приложение',
+  desc:'Вы развиваете фитнес-приложение с подпиской. Покажите путь от установок до выручки.',
+  metrics:[
+    {id:'downloads',name:'Установки',abbr:'App Downloads',type:'leading'},
+    {id:'onboarding',name:'Прохождение онбординга',abbr:'Onboarding Completion',type:'leading'},
+    {id:'push_ctr',name:'Открытие уведомлений',abbr:'Push Notification CTR',type:'leading'},
+    {id:'price',name:'Цена подписки',abbr:'Subscription Price',type:'leading'},
+    {id:'activation',name:'Активация',abbr:'Activation Rate',type:'calc'},
+    {id:'retention',name:'Удержание 30 дней',abbr:'D30 Retention',type:'calc'},
+    {id:'paying',name:'Платящие пользователи',abbr:'Paying Users',type:'calc'},
+    {id:'revenue',name:'Выручка',abbr:'Revenue',type:'lagging'},
+  ],
+  rules:{
+    activation:{req:['downloads','onboarding'],opt:[]},
+    retention:{req:['activation'],opt:['push_ctr']},
+    paying:{req:['retention'],opt:[]},
+    revenue:{req:['paying','price'],opt:[]},
+  },
+  calc:{
+    activation:{lbl:'Downloads + Onboarding → Activation',formula:'Activated = Downloads × OnboardingRate',example:'50 000 × 40 % = 20 000 активированных'},
+    retention:{lbl:'Activation (+ Push CTR) → Retention',formula:'Retained = Activated × D30_rate',example:'20 000 × 25 % = 5 000 удержанных'},
+    paying:{lbl:'Retention → Paying Users',formula:'Paying = Retained × PayConversion',example:'5 000 × 15 % = 750 платящих'},
+    revenue:{lbl:'Paying + Price → Revenue',formula:'Revenue = Paying × Price',example:'750 × 299 ₽ = 224 250 ₽ / мес'},
+  },
+},
+{
+  id:'b2b',title:'4. B2B SaaS (CRM)',
+  desc:'Вы отвечаете за CRM-систему для бизнеса. Постройте дерево от лидов и лояльности до годового дохода (ARR).',
+  metrics:[
+    {id:'leads',name:'Лиды',abbr:'Leads',type:'leading'},
+    {id:'sales_cr',name:'Конверсия продаж',abbr:'Sales Conversion Rate',type:'leading'},
+    {id:'acv',name:'Средний контракт',abbr:'ACV — Avg Contract Value',type:'leading'},
+    {id:'nps',name:'Индекс лояльности',abbr:'NPS — Net Promoter Score',type:'leading'},
+    {id:'support',name:'Скорость поддержки',abbr:'Support Response Time',type:'leading'},
+    {id:'new_clients',name:'Новые клиенты',abbr:'New Clients',type:'calc'},
+    {id:'churn',name:'Отток клиентов',abbr:'Client Churn',type:'calc'},
+    {id:'active',name:'Активные клиенты',abbr:'Active Clients',type:'calc'},
+    {id:'arr',name:'Годовой доход',abbr:'ARR — Annual Recurring Revenue',type:'lagging'},
+  ],
+  rules:{
+    new_clients:{req:['leads','sales_cr'],opt:[]},
+    churn:{req:['nps'],opt:['support']},
+    active:{req:['new_clients','churn'],opt:[]},
+    arr:{req:['active','acv'],opt:[]},
+  },
+  calc:{
+    new_clients:{lbl:'Leads + Sales CR → New Clients',formula:'NewClients = Leads × SalesCR',example:'200 × 15 % = 30 новых клиентов'},
+    churn:{lbl:'NPS (+ Support) → Churn',formula:'Churn = f(NPS, SupportTime)',example:'NPS = 50, Support = 2 ч  →  Churn ≈ 5 % / мес'},
+    active:{lbl:'New Clients + Churn → Active',formula:'Active = Prev × (1 − Churn) + NewClients',example:'500 × 0,95 + 30 = 505 клиентов'},
+    arr:{lbl:'Active + ACV → ARR',formula:'ARR = ActiveClients × ACV',example:'505 × 120 000 ₽ = 60 600 000 ₽ / год'},
+  },
+},
+{
+  id:'sandbox',title:'5. Конструктор (все метрики)',
+  desc:'Свободный режим — все метрики доступны. Соберите дерево для любого продукта. Проверка покажет структурный анализ графа.',
+  metrics:[
+    {id:'traffic',name:'Трафик',abbr:'Traffic',type:'leading'},
+    {id:'downloads',name:'Установки',abbr:'Downloads',type:'leading'},
+    {id:'leads',name:'Лиды',abbr:'Leads',type:'leading'},
+    {id:'ad_spend',name:'Рекламный бюджет',abbr:'Ad Spend',type:'leading'},
+    {id:'nps',name:'Индекс лояльности',abbr:'NPS',type:'leading'},
+    {id:'csat',name:'Удовлетворённость',abbr:'CSAT',type:'leading'},
+    {id:'price',name:'Цена подписки',abbr:'Price',type:'leading'},
+    {id:'onboarding',name:'Онбординг',abbr:'Onboarding Rate',type:'leading'},
+    {id:'push_ctr',name:'Открытие пушей',abbr:'Push CTR',type:'leading'},
+    {id:'support',name:'Скорость поддержки',abbr:'Support Time',type:'leading'},
+    {id:'content_q',name:'Качество контента',abbr:'Content Quality',type:'leading'},
+    {id:'cr',name:'Конверсия',abbr:'CR — Conversion Rate',type:'calc'},
+    {id:'aov',name:'Средний чек',abbr:'AOV',type:'calc'},
+    {id:'arpu',name:'Доход на пользователя',abbr:'ARPU',type:'calc'},
+    {id:'orders',name:'Заказы',abbr:'Orders',type:'calc'},
+    {id:'new_clients',name:'Новые клиенты',abbr:'New Clients',type:'calc'},
+    {id:'activation',name:'Активация',abbr:'Activation',type:'calc'},
+    {id:'churn',name:'Отток',abbr:'Churn Rate',type:'calc'},
+    {id:'retention',name:'Удержание',abbr:'Retention',type:'calc'},
+    {id:'repeat',name:'Коэффициент повторных покупок',abbr:'Repeat Rate',type:'calc'},
+    {id:'mau',name:'Активные пользователи',abbr:'MAU',type:'calc'},
+    {id:'dau',name:'Ежедневные пользователи',abbr:'DAU',type:'calc'},
+    {id:'paying',name:'Платящие пользователи',abbr:'Paying Users',type:'calc'},
+    {id:'cac',name:'Стоимость привлечения',abbr:'CAC',type:'calc'},
+    {id:'revenue',name:'Выручка',abbr:'Revenue',type:'lagging'},
+    {id:'mrr',name:'Ежемесячный доход',abbr:'MRR',type:'lagging'},
+    {id:'arr',name:'Годовой доход',abbr:'ARR',type:'lagging'},
+    {id:'ltv',name:'Пожизненная ценность',abbr:'LTV',type:'lagging'},
+    {id:'profit',name:'Прибыль',abbr:'Profit',type:'lagging'},
+  ],
+  rules:null,calc:null,
+},
+];
+
+/* ===============================================================
+   STATE
+   =============================================================== */
+const S={caseId:null,nodes:[],edges:[],selId:null,selType:null,nn:1,ne:1,saved:{}};
+
+/* ===============================================================
+   DOM REFS
+   =============================================================== */
+const $=id=>document.getElementById(id);
+const pal=$('palette'),nodeL=$('nodeLayer'),edgeL=$('edgeLayer'),wrap=$('canvasWrap'),
+      hint=$('canvasHint'),cSel=$('caseSelect'),cBar=$('caseBar'),
+      btnC=$('btnCheck'),btnCl=$('btnClear'),btnH=$('btnHint'),
+      ov=$('overlay'),resP=$('resPanel'),tbI=$('tbInfo');
+
+/* ===============================================================
+   HELPERS
+   =============================================================== */
+function cas(){return CASES.find(c=>c.id===S.caseId)}
+function met(id){return cas()?.metrics.find(m=>m.id===id)}
+function nodeByMet(mid){return S.nodes.find(n=>n.metricId===mid)}
+function tColor(t){return t==='leading'?'var(--color-leading)':t==='calc'?'var(--color-calc)':'var(--color-lagging)'}
+function tClass(t){return t==='leading'?'leading':t==='calc'?'calc':'lagging'}
+function bezier(x1,y1,x2,y2){const d=Math.abs(y2-y1),cp=Math.max(40,d*.45);return`M${x1} ${y1}C${x1} ${y1+cp},${x2} ${y2-cp},${x2} ${y2}`}
+
+function portPos(nid,type){
+  const n=S.nodes.find(x=>x.id===nid);if(!n)return null;
+  const el=nodeL.querySelector(`[data-nid="${nid}"]`);if(!el)return null;
+  const w=el.offsetWidth,h=el.offsetHeight;
+  return{x:n.x+w/2,y:type==='in'?n.y:n.y+h};
+}
+
+/* ===============================================================
+   RENDERING — PALETTE
+   =============================================================== */
+function renderPal(){
+  pal.innerHTML='';
+  const c=cas();if(!c)return;
+  const groups=[{t:'leading',lbl:'Опережающие'},{t:'calc',lbl:'Расчётные'},{t:'lagging',lbl:'Запаздывающие'}];
+  for(const g of groups){
+    const ms=c.metrics.filter(m=>m.type===g.t);if(!ms.length)continue;
+    const sec=document.createElement('div');sec.className='pal-section';
+    sec.innerHTML=`<div class="pal-title ${g.t}">${g.lbl}</div>`;
+    for(const m of ms){
+      const used=S.nodes.some(n=>n.metricId===m.id);
+      const d=document.createElement('div');
+      d.className='pal-card'+(used?' used':'');d.dataset.mid=m.id;
+      d.innerHTML=`<span class="pal-card-dot" style="background:${tColor(m.type)}"></span><div><div class="pal-card-name">${m.name}</div><div class="pal-card-abbr">${m.abbr}</div></div>`;
+      sec.appendChild(d);
+    }
+    pal.appendChild(sec);
+  }
+}
+
+function markPalUsed(){
+  pal.querySelectorAll('.pal-card').forEach(c=>{
+    const used=S.nodes.some(n=>n.metricId===c.dataset.mid);
+    c.classList.toggle('used',used);
+  });
+}
+
+/* ===============================================================
+   RENDERING — EDGES
+   =============================================================== */
+function renderEdges(){
+  const exist={};
+  edgeL.querySelectorAll('.edge-group').forEach(g=>{exist[g.dataset.eid]=g});
+  const cur=new Set(S.edges.map(e=>e.id));
+  for(const[id,g]of Object.entries(exist))if(!cur.has(id))g.remove();
+
+  for(const edge of S.edges){
+    const fp=portPos(edge.from,'out'),tp=portPos(edge.to,'in');
+    if(!fp||!tp)continue;
+    const d=bezier(fp.x,fp.y,tp.x,tp.y);
+    let g=exist[edge.id];
+    if(!g){
+      g=document.createElementNS('http://www.w3.org/2000/svg','g');
+      g.classList.add('edge-group');g.dataset.eid=edge.id;
+      const hit=document.createElementNS('http://www.w3.org/2000/svg','path');
+      hit.classList.add('edge-hit');hit.setAttribute('stroke','transparent');
+      hit.setAttribute('stroke-width','24');hit.setAttribute('fill','none');
+      const line=document.createElementNS('http://www.w3.org/2000/svg','path');
+      line.classList.add('edge-line');line.setAttribute('stroke','#6b7280');
+      line.setAttribute('stroke-width','2');line.setAttribute('fill','none');
+      line.setAttribute('marker-end','url(#aw)');
+      g.appendChild(hit);g.appendChild(line);edgeL.appendChild(g);
+      hit.addEventListener('click',ev=>{ev.stopPropagation();selEdge(edge.id)});
+    }
+    g.querySelector('.edge-hit').setAttribute('d',d);
+    const line=g.querySelector('.edge-line');line.setAttribute('d',d);
+    const isSel=S.selType==='edge'&&S.selId===edge.id;
+    g.classList.toggle('selected',isSel);
+    line.setAttribute('marker-end',isSel?'url(#aw-a)':'url(#aw)');
+  }
+}
+
+/* ===============================================================
+   RENDERING — UI updates
+   =============================================================== */
+function updHint(){hint.style.opacity=S.nodes.length?'0':'1'}
+function updTb(){
+  const n=S.nodes.length,e=S.edges.length;
+  tbI.textContent=n?`${n} метрик · ${e} связей`:'';
+  btnC.disabled=n===0;
+  persist();
+}
+function updPorts(){
+  nodeL.querySelectorAll('.port').forEach(p=>p.classList.remove('connected'));
+  for(const e of S.edges){
+    nodeL.querySelector(`[data-nid="${e.from}"] .port-out`)?.classList.add('connected');
+    nodeL.querySelector(`[data-nid="${e.to}"] .port-in`)?.classList.add('connected');
+  }
+}
+
+/* ===============================================================
+   NODE / EDGE CRUD
+   =============================================================== */
+function addNode(mid,x,y){
+  if(S.nodes.some(n=>n.metricId===mid))return;
+  const m=met(mid);if(!m)return;
+  const id='n'+(S.nn++);
+  S.nodes.push({id,metricId:mid,x,y});
+  const el=document.createElement('div');
+  el.className='node';el.dataset.nid=id;el.dataset.mid=mid;
+  el.style.left=x+'px';el.style.top=y+'px';
+  el.style.setProperty('--mc',tColor(m.type));
+  el.innerHTML=`<div class="port port-in" data-p="in" title="Входящие связи приходят сюда (сверху)"></div><div class="node-body"><div class="node-name">${m.name}</div><div class="node-abbr">${m.abbr}</div></div><div class="port port-out" data-p="out" title="Потяните отсюда вниз, чтобы создать связь"></div>`;
+  nodeL.appendChild(el);
+  markPalUsed();updHint();updTb();
+}
+function rmNode(nid){
+  S.edges.filter(e=>e.from===nid||e.to===nid).forEach(e=>rmEdge(e.id));
+  S.nodes=S.nodes.filter(n=>n.id!==nid);
+  nodeL.querySelector(`[data-nid="${nid}"]`)?.remove();
+  desel();markPalUsed();updHint();updTb();
+}
+function moveNode(nid,x,y){
+  const n=S.nodes.find(n=>n.id===nid);if(!n)return;
+  n.x=x;n.y=y;
+  const el=nodeL.querySelector(`[data-nid="${nid}"]`);
+  if(el){el.style.left=x+'px';el.style.top=y+'px'}
+  renderEdges();
+}
+function addEdge(fromId,toId){
+  if(fromId===toId)return;
+  if(S.edges.some(e=>e.from===fromId&&e.to===toId))return;
+  const id='e'+(S.ne++);
+  S.edges.push({id,from:fromId,to:toId});
+  renderEdges();updPorts();updTb();
+}
+function rmEdge(eid){
+  S.edges=S.edges.filter(e=>e.id!==eid);
+  edgeL.querySelector(`[data-eid="${eid}"]`)?.remove();
+  desel();updPorts();updTb();
+}
+
+/* ===============================================================
+   SELECTION
+   =============================================================== */
+function selNode(nid){
+  desel();S.selId=nid;S.selType='node';
+  nodeL.querySelector(`[data-nid="${nid}"]`)?.classList.add('selected');
+}
+function selEdge(eid){
+  desel();S.selId=eid;S.selType='edge';
+  const g=edgeL.querySelector(`[data-eid="${eid}"]`);
+  if(g){g.classList.add('selected');g.querySelector('.edge-line')?.setAttribute('marker-end','url(#aw-a)')}
+}
+function desel(){
+  if(S.selType==='node')nodeL.querySelector(`[data-nid="${S.selId}"]`)?.classList.remove('selected');
+  if(S.selType==='edge'){
+    const g=edgeL.querySelector(`[data-eid="${S.selId}"]`);
+    if(g){g.classList.remove('selected');g.querySelector('.edge-line')?.setAttribute('marker-end','url(#aw)')}
+  }
+  S.selId=null;S.selType=null;
+}
+
+/* ===============================================================
+   INTERACTIONS — Drag from palette
+   =============================================================== */
+(function initPalDrag(){
+  let ghost=null,card=null;
+  pal.addEventListener('mousedown',e=>{
+    const c=e.target.closest('.pal-card');
+    if(!c||c.classList.contains('used'))return;
+    card=c;
+    ghost=c.cloneNode(true);ghost.classList.add('ghost');
+    ghost.style.width=c.offsetWidth+'px';
+    ghost.style.left=(e.clientX-c.offsetWidth/2)+'px';
+    ghost.style.top=(e.clientY-16)+'px';
+    document.body.appendChild(ghost);
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!ghost)return;
+    ghost.style.left=(e.clientX-ghost.offsetWidth/2)+'px';
+    ghost.style.top=(e.clientY-16)+'px';
+  });
+  document.addEventListener('mouseup',e=>{
+    if(!ghost){return}
+    const r=wrap.getBoundingClientRect();
+    if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){
+      addNode(card.dataset.mid,Math.max(0,e.clientX-r.left-97),Math.max(0,e.clientY-r.top-30));
+    }
+    ghost.remove();ghost=null;card=null;
+  });
+})();
+
+/* Double-click to add */
+pal.addEventListener('dblclick',e=>{
+  const c=e.target.closest('.pal-card');
+  if(!c||c.classList.contains('used'))return;
+  const m=met(c.dataset.mid);if(!m)return;
+  const same=S.nodes.filter(n=>met(n.metricId)?.type===m.type);
+  const col=same.length;
+  const yMap={leading:40,calc:200,lagging:400};
+  addNode(m.id,40+col*210,yMap[m.type]||200);
+});
+
+/* ===============================================================
+   INTERACTIONS — Node drag on canvas
+   =============================================================== */
+(function initNodeDrag(){
+  let nid=null,ox=0,oy=0;
+  nodeL.addEventListener('mousedown',e=>{
+    if(e.target.closest('.port'))return;
+    const el=e.target.closest('.node');if(!el)return;
+    nid=el.dataset.nid;selNode(nid);
+    const rect=el.getBoundingClientRect();
+    ox=e.clientX-rect.left;oy=e.clientY-rect.top;
+    el.classList.add('dragging');e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!nid)return;
+    const r=wrap.getBoundingClientRect();
+    moveNode(nid,Math.max(0,e.clientX-r.left-ox),Math.max(0,e.clientY-r.top-oy));
+  });
+  document.addEventListener('mouseup',()=>{
+    if(!nid)return;
+    nodeL.querySelector(`[data-nid="${nid}"]`)?.classList.remove('dragging');
+    nid=null;persist();
+  });
+})();
+
+/* ===============================================================
+   INTERACTIONS — Edge creation
+   =============================================================== */
+(function initEdgeDraw(){
+  let src=null,tmp=null;
+  nodeL.addEventListener('mousedown',e=>{
+    const port=e.target.closest('.port-out');if(!port)return;
+    const nel=port.closest('.node');
+    const r=wrap.getBoundingClientRect(),pr=port.getBoundingClientRect();
+    src={nid:nel.dataset.nid,x:pr.left+pr.width/2-r.left,y:pr.top+pr.height/2-r.top};
+    tmp=document.createElementNS('http://www.w3.org/2000/svg','path');
+    tmp.classList.add('temp-edge');
+    tmp.setAttribute('stroke','rgba(255,255,255,.3)');
+    tmp.setAttribute('stroke-width','2');tmp.setAttribute('fill','none');
+    tmp.setAttribute('marker-end','url(#aw-t)');
+    edgeL.appendChild(tmp);
+    e.preventDefault();e.stopPropagation();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!src)return;
+    const r=wrap.getBoundingClientRect();
+    tmp.setAttribute('d',bezier(src.x,src.y,e.clientX-r.left,e.clientY-r.top));
+    nodeL.querySelectorAll('.port-in').forEach(p=>p.classList.remove('glow'));
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const pin=el?.closest?.('.port-in');
+    if(pin&&pin.closest('.node').dataset.nid!==src.nid)pin.classList.add('glow');
+  });
+  document.addEventListener('mouseup',e=>{
+    if(!src)return;
+    nodeL.querySelectorAll('.port-in').forEach(p=>p.classList.remove('glow'));
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const pin=el?.closest?.('.port-in');
+    if(pin){
+      const tnid=pin.closest('.node').dataset.nid;
+      if(tnid!==src.nid)addEdge(src.nid,tnid);
+    }
+    tmp?.remove();tmp=null;src=null;
+  });
+})();
+
+/* Canvas click to deselect */
+wrap.addEventListener('mousedown',e=>{
+  if(e.target===wrap||e.target.closest('.canvas-hint'))desel();
+});
+
+/* Keyboard */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Delete'||e.key==='Backspace'){
+    if(document.activeElement?.tagName==='SELECT'||document.activeElement?.tagName==='INPUT')return;
+    if(S.selId){
+      e.preventDefault();
+      if(S.selType==='node')rmNode(S.selId);else rmEdge(S.selId);
+    }
+  }
+  if(e.key==='Escape'){desel();hideRes()}
+});
+
+/* ===============================================================
+   VALIDATION
+   =============================================================== */
+function hasCycle(){
+  const vis=new Set,stk=new Set;
+  function dfs(nid){
+    vis.add(nid);stk.add(nid);
+    for(const e of S.edges){
+      if(e.from!==nid)continue;
+      if(!vis.has(e.to)){if(dfs(e.to))return true}
+      else if(stk.has(e.to))return true;
+    }
+    stk.delete(nid);return false;
+  }
+  for(const n of S.nodes)if(!vis.has(n.id)&&dfs(n.id))return true;
+  return false;
+}
+
+function treeDepth(){
+  const ind={},adj={};
+  S.nodes.forEach(n=>{ind[n.id]=0;adj[n.id]=[]});
+  S.edges.forEach(e=>{ind[e.to]=(ind[e.to]||0)+1;adj[e.from].push(e.to)});
+  const q=S.nodes.filter(n=>ind[n.id]===0).map(n=>n.id),lv={};
+  q.forEach(id=>lv[id]=0);
+  while(q.length){const c=q.shift();for(const nx of(adj[c]||[])){lv[nx]=Math.max(lv[nx]||0,lv[c]+1);ind[nx]--;if(ind[nx]===0)q.push(nx)}}
+  return Math.max(0,...Object.values(lv))+1;
+}
+
+function validate(){
+  const c=cas();
+  if(!c.rules)return validateSandbox();
+
+  const res={ok:true,edges:[],metrics:[],calcs:[]};
+
+  // Check each user edge
+  for(const edge of S.edges){
+    const fn=S.nodes.find(n=>n.id===edge.from);
+    const tn=S.nodes.find(n=>n.id===edge.to);
+    if(!fn||!tn)continue;
+    const rule=c.rules[tn.metricId];
+    if(!rule){
+      res.edges.push({eid:edge.id,s:'invalid',msg:`${met(tn.metricId)?.name} — опережающая метрика, не имеет входных связей`});
+      res.ok=false;continue;
+    }
+    const all=[...(rule.req||[]),...(rule.opt||[])];
+    if(all.includes(fn.metricId)){
+      res.edges.push({eid:edge.id,s:'ok'});
+    }else{
+      res.edges.push({eid:edge.id,s:'invalid',msg:`${met(fn.metricId)?.abbr} не влияет на ${met(tn.metricId)?.abbr}`});
+      res.ok=false;
+    }
+  }
+
+  // Check each rule metric
+  for(const[mid,rule]of Object.entries(c.rules)){
+    const node=nodeByMet(mid);
+    if(!node){
+      res.metrics.push({mid,s:'missing'});res.ok=false;continue;
+    }
+    const inE=S.edges.filter(e=>e.to===node.id);
+    const conn=inE.map(e=>S.nodes.find(n=>n.id===e.from)?.metricId).filter(Boolean);
+    const present=rule.req.filter(r=>conn.includes(r));
+    const miss=rule.req.filter(r=>!conn.includes(r));
+    const optP=(rule.opt||[]).filter(o=>conn.includes(o));
+    const invalid=conn.filter(c=>!rule.req.includes(c)&&!(rule.opt||[]).includes(c));
+    if(miss.length===0&&invalid.length===0){
+      res.metrics.push({mid,s:'ok'});
+      if(c.calc?.[mid])res.calcs.push({mid,...c.calc[mid],s:'ok'});
+    }else{
+      res.metrics.push({mid,s:'partial',miss,invalid});res.ok=false;
+      if(c.calc?.[mid])res.calcs.push({mid,...c.calc[mid],s:'partial',miss});
+    }
+  }
+
+  // Also check leading metrics are on canvas if they're needed
+  const needed=new Set();
+  for(const[,rule]of Object.entries(c.rules)){[...rule.req,...(rule.opt||[])].forEach(r=>needed.add(r))}
+  for(const mid of needed){
+    if(c.rules[mid])continue; // already handled in rules loop above
+    if(!nodeByMet(mid)){
+      res.metrics.push({mid,s:'not_on_canvas'});res.ok=false;
+    }
+  }
+
+  return res;
+}
+
+function validateSandbox(){
+  const msgs=[];
+  if(!S.nodes.length){msgs.push({t:'info',m:'Разместите метрики на холсте и соедините их'});return{sandbox:true,msgs}}
+  if(!S.edges.length){msgs.push({t:'warn',m:'Метрики не соединены — создайте связи между ними'});return{sandbox:true,msgs}}
+  // 7.6: честная подпись — свободный режим без единственно верного ответа
+  msgs.push({t:'info',m:'Свободный режим: единственно верного дерева здесь нет — проверяю только структуру и направление связей.'});
+  if(hasCycle()){msgs.push({t:'err',m:'Обнаружен цикл. Дерево метрик должно быть ациклическим графом (DAG)'})}
+  else{msgs.push({t:'ok',m:'Граф является корректным DAG (нет циклов)'})}
+  const conn=new Set();S.edges.forEach(e=>{conn.add(e.from);conn.add(e.to)});
+  const orph=S.nodes.filter(n=>!conn.has(n.id));
+  if(orph.length)msgs.push({t:'warn',m:'Несвязанные метрики: '+orph.map(n=>met(n.metricId)?.abbr).join(', ')});
+  // 7.6: простые правила по типам метрик (без «умной» валидации содержания)
+  for(const n of S.nodes){
+    const m=met(n.metricId);if(!m)continue;
+    const hasIn=S.edges.some(e=>e.to===n.id);
+    const hasOut=S.edges.some(e=>e.from===n.id);
+    if(!hasIn&&!hasOut)continue; // полностью несвязанные уже перечислены выше
+    if(m.type==='leading'&&hasIn)msgs.push({t:'info',m:`${m.abbr} — опережающая, обычно не имеет входящих связей`});
+    if(m.type==='lagging'&&hasOut)msgs.push({t:'info',m:`${m.abbr} — запаздывающая, обычно не имеет исходящих связей`});
+    if((m.type==='calc'||m.type==='lagging')&&!hasIn)msgs.push({t:'warn',m:`${m.abbr} — ${m.type==='lagging'?'итоговая':'расчётная'} метрика без входящих связей: её не из чего рассчитать`});
+    if(m.type==='leading'&&!hasOut)msgs.push({t:'info',m:`${m.abbr} — опережающая метрика ни на что не влияет (нет исходящих связей)`});
+  }
+  const d=treeDepth();
+  msgs.push({t:'info',m:`Глубина: ${d} ур. · Узлов: ${S.nodes.length} · Связей: ${S.edges.length}`});
+  return{sandbox:true,msgs};
+}
+
+/* ===============================================================
+   RESULTS DISPLAY
+   =============================================================== */
+function showRes(r){
+  resP.innerHTML='';
+  if(r.sandbox)return showSandbox(r);
+
+  const c=cas();
+  const hd=document.createElement('div');hd.className='res-head';
+  if(r.ok){
+    hd.innerHTML=`<span class="res-icon pop">&#9989;</span><div><div class="res-title">Дерево построено правильно!</div><div class="res-sub">Все связи корректны, расчётная цепочка полна</div></div>`;
+    SCORM.done();
+  }else{
+    const corr=r.edges.filter(e=>e.s==='ok').length;
+    const total=Object.values(c.rules).reduce((s,rl)=>s+rl.req.length,0);
+    hd.innerHTML=`<span class="res-icon">&#9888;&#65039;</span><div><div class="res-title">Есть замечания</div><div class="res-sub">Верных связей: ${corr} из ${total} необходимых</div></div>`;
+  }
+  resP.appendChild(hd);
+
+  // Missing metrics
+  const miss=r.metrics.filter(m=>m.s==='missing'||m.s==='not_on_canvas');
+  if(miss.length){
+    const sec=document.createElement('div');
+    sec.innerHTML='<div class="res-section-title" style="color:var(--warn)">Метрики не на холсте</div>';
+    for(const m of miss){
+      const metric=met(m.mid);
+      const d=document.createElement('div');d.className='calc-card';
+      d.innerHTML=`<div class="calc-head"><span class="calc-dot warn">!</span><span class="calc-label">${metric?.name||m.mid} (${metric?.abbr||''})</span></div><div class="calc-warn">Разместите эту метрику на холсте</div>`;
+      sec.appendChild(d);
+    }
+    resP.appendChild(sec);
+  }
+
+  // Calculation chain
+  if(c.calc){
+    const sec=document.createElement('div');
+    sec.innerHTML='<div class="res-section-title">Цепочка расчётов</div>';
+    for(const[mid,cl]of Object.entries(c.calc)){
+      const ri=r.calcs.find(x=>x.mid===mid);
+      const metric=met(mid);
+      const d=document.createElement('div');d.className='calc-card';
+      if(ri&&ri.s==='ok'){
+        d.innerHTML=`<div class="calc-head"><span class="calc-dot ok">&#10003;</span><span class="calc-label">${cl.lbl}</span></div><div class="calc-formula">${cl.formula}</div><div class="calc-example">${cl.example}</div>`;
+      }else if(ri&&ri.s==='partial'){
+        const mNames=(ri.miss||[]).map(m=>met(m)?.abbr||m).join(', ');
+        d.innerHTML=`<div class="calc-head"><span class="calc-dot warn">!</span><span class="calc-label">${cl.lbl}</span></div><div class="calc-formula">${cl.formula}</div><div class="calc-warn">Не хватает: ${mNames}</div>`;
+      }else{
+        d.innerHTML=`<div class="calc-head"><span class="calc-dot err">&#10007;</span><span class="calc-label">${cl.lbl}</span></div><div class="calc-err">${metric?.name||mid} не на холсте</div>`;
+      }
+      sec.appendChild(d);
+    }
+    resP.appendChild(sec);
+  }
+
+  // Invalid edges
+  const inv=r.edges.filter(e=>e.s==='invalid');
+  if(inv.length){
+    const sec=document.createElement('div');
+    sec.innerHTML='<div class="res-section-title" style="color:var(--err)">Некорректные связи</div>';
+    for(const e of inv){
+      const d=document.createElement('div');d.className='calc-card';
+      d.innerHTML=`<div class="calc-head"><span class="calc-dot err">&#10007;</span><span class="calc-label">${e.msg||'Неверная связь'}</span></div>`;
+      sec.appendChild(d);
+    }
+    resP.appendChild(sec);
+  }
+
+  // Close button
+  const btn=document.createElement('button');btn.className='btn btn-primary';
+  btn.style.cssText='margin-top:16px;width:100%';btn.textContent='Закрыть';
+  btn.addEventListener('click',hideRes);resP.appendChild(btn);
+  ov.classList.add('show');
+  colorEdges(r);
+}
+
+function showSandbox(r){
+  const hd=document.createElement('div');hd.className='res-head';
+  hd.innerHTML='<span class="res-icon">&#128736;&#65039;</span><div><div class="res-title">Анализ дерева метрик</div><div class="res-sub">Свободный конструктор — структурная проверка</div></div>';
+  resP.appendChild(hd);
+  for(const m of r.msgs){
+    const cls={ok:'s-ok',warn:'s-warn',err:'s-err',info:'s-info'}[m.t]||'s-info';
+    const ico={ok:'&#10003;',warn:'&#9888;',err:'&#10007;',info:'&#8505;'}[m.t]||'&#8505;';
+    const d=document.createElement('div');d.className='sandbox-msg '+cls;
+    d.innerHTML=`<span>${ico}</span><span>${m.m}</span>`;
+    resP.appendChild(d);
+  }
+  const btn=document.createElement('button');btn.className='btn btn-primary';
+  btn.style.cssText='margin-top:16px;width:100%';btn.textContent='Закрыть';
+  btn.addEventListener('click',hideRes);resP.appendChild(btn);
+  ov.classList.add('show');
+}
+
+function colorEdges(r){
+  if(!r.edges)return;
+  for(const e of r.edges){
+    const g=edgeL.querySelector(`[data-eid="${e.eid}"]`);if(!g)continue;
+    g.classList.remove('correct','invalid');
+    if(e.s==='ok'){g.classList.add('correct');g.querySelector('.edge-line')?.setAttribute('marker-end','url(#aw-ok)')}
+    if(e.s==='invalid'){g.classList.add('invalid');g.querySelector('.edge-line')?.setAttribute('marker-end','url(#aw-err)')}
+  }
+}
+function clearEdgeColors(){
+  edgeL.querySelectorAll('.edge-group').forEach(g=>{
+    g.classList.remove('correct','invalid');
+    g.querySelector('.edge-line')?.setAttribute('marker-end','url(#aw)');
+  });
+}
+
+function hideRes(){ov.classList.remove('show');clearEdgeColors()}
+
+/* ===============================================================
+   CASE MANAGEMENT
+   =============================================================== */
+function saveState(){
+  S.saved[S.caseId]={nodes:JSON.parse(JSON.stringify(S.nodes)),edges:JSON.parse(JSON.stringify(S.edges)),nn:S.nn,ne:S.ne};
+}
+
+/* 7.7: сохранение состояния между заходами — SCORM cmi.suspend_data + localStorage-фолбэк */
+const LSKEY='dddm_metric_tree_v1';
+function persist(){
+  if(!S.caseId)return;
+  const saved={...S.saved,[S.caseId]:{nodes:S.nodes,edges:S.edges,nn:S.nn,ne:S.ne}};
+  const data=JSON.stringify({v:1,caseId:S.caseId,saved});
+  try{localStorage.setItem(LSKEY,data)}catch(e){}
+  SCORM.setSuspend(data);
+}
+function restore(){
+  let data=SCORM.getSuspend();
+  if(!data){try{data=localStorage.getItem(LSKEY)}catch(e){data=null}}
+  if(!data)return null;
+  try{const o=JSON.parse(data);if(o&&o.saved){S.saved=o.saved;return o.caseId||null}}catch(e){}
+  return null;
+}
+function loadCase(id){
+  if(S.caseId)saveState();
+  S.caseId=id;
+  const saved=S.saved[id];
+  if(saved){S.nodes=saved.nodes;S.edges=saved.edges;S.nn=saved.nn;S.ne=saved.ne}
+  else{S.nodes=[];S.edges=[];S.nn=1;S.ne=1}
+  const c=cas();
+  cBar.innerHTML=c.desc+' <span class="dir-hint">· Стройте сверху вниз: опережающие → расчётные → запаздывающие. Связь тянется от нижнего порта карточки к верхнему порту следующей.</span>';
+  desel();clearEdgeColors();
+  // Rebuild DOM
+  nodeL.innerHTML='';edgeL.querySelectorAll('.edge-group').forEach(g=>g.remove());
+  for(const n of S.nodes){
+    const m=met(n.metricId);if(!m)continue;
+    const el=document.createElement('div');
+    el.className='node';el.dataset.nid=n.id;el.dataset.mid=n.metricId;
+    el.style.left=n.x+'px';el.style.top=n.y+'px';
+    el.style.setProperty('--mc',tColor(m.type));
+    el.innerHTML=`<div class="port port-in" data-p="in" title="Входящие связи приходят сюда (сверху)"></div><div class="node-body"><div class="node-name">${m.name}</div><div class="node-abbr">${m.abbr}</div></div><div class="port port-out" data-p="out" title="Потяните отсюда вниз, чтобы создать связь"></div>`;
+    nodeL.appendChild(el);
+  }
+  renderEdges();renderPal();updPorts();updHint();updTb();
+}
+
+function clearCanvas(){
+  if(!S.nodes.length)return;
+  confirmPanel('Очистить холст?','Все метрики и связи текущего кейса будут удалены.','Очистить',()=>{
+    S.nodes=[];S.edges=[];S.nn=1;S.ne=1;
+    nodeL.innerHTML='';edgeL.querySelectorAll('.edge-group').forEach(g=>g.remove());
+    desel();clearEdgeColors();renderPal();updPorts();updHint();updTb();
+  });
+}
+
+/* Подсказка/подтверждение в стиле ЛМС — через тот же оверлей, без нативных alert()/confirm() */
+function hintPanel(title,sub,lines){
+  resP.innerHTML='';
+  const hd=document.createElement('div');hd.className='res-head';
+  hd.innerHTML=`<span class="res-icon">&#128161;</span><div><div class="res-title">${title}</div><div class="res-sub">${sub}</div></div>`;
+  resP.appendChild(hd);
+  for(const ln of lines){
+    const d=document.createElement('div');d.className='sandbox-msg s-info';
+    d.innerHTML=`<span>&#8505;</span><span>${ln}</span>`;
+    resP.appendChild(d);
+  }
+  const btn=document.createElement('button');btn.className='btn btn-primary';
+  btn.style.cssText='margin-top:16px;width:100%';btn.textContent='Понятно';
+  btn.addEventListener('click',hideRes);resP.appendChild(btn);
+  ov.classList.add('show');
+}
+function confirmPanel(title,sub,okLabel,onYes){
+  resP.innerHTML='';
+  const hd=document.createElement('div');hd.className='res-head';
+  hd.innerHTML=`<span class="res-icon">&#128465;&#65039;</span><div><div class="res-title">${title}</div><div class="res-sub">${sub}</div></div>`;
+  resP.appendChild(hd);
+  const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;margin-top:16px';
+  const no=document.createElement('button');no.className='btn btn-sec';no.style.flex='1';no.textContent='Отмена';
+  const yes=document.createElement('button');yes.className='btn btn-primary';yes.style.flex='1';yes.textContent=okLabel;
+  no.addEventListener('click',hideRes);
+  yes.addEventListener('click',()=>{hideRes();onYes()});
+  row.appendChild(no);row.appendChild(yes);resP.appendChild(row);
+  ov.classList.add('show');
+}
+
+/* Ближайшие нужные шаги по эталону кейса (не весь ответ — максимум 2 действия) */
+function nextHints(c){
+  const out=[];
+  for(const[mid,rule]of Object.entries(c.rules)){
+    const node=nodeByMet(mid);
+    const conn=node?S.edges.filter(e=>e.to===node.id).map(e=>S.nodes.find(n=>n.id===e.from)?.metricId):[];
+    if(!node)out.push(`Добавьте на холст «${met(mid)?.name}» и подведите к ней входящие связи`);
+    for(const r of(rule.req||[])){
+      if(node&&conn.includes(r))continue;
+      if(!nodeByMet(r))out.push(`Добавьте «${met(r)?.name}» и свяжите её с «${met(mid)?.name}»`);
+      else out.push(`Свяжите «${met(r)?.name}» → «${met(mid)?.name}»`);
+      if(out.length>=2)return out.slice(0,2);
+    }
+    if(out.length>=2)break;
+  }
+  return out.slice(0,2);
+}
+
+function showHint(){
+  const c=cas();
+  if(!c.rules){
+    hintPanel('Свободный режим','Конструктор без единственно верного ответа',[
+      'Стройте дерево сверху вниз: опережающие показатели — вверху, итоговые (запаздывающие) — внизу.',
+      'Каждая расчётная и итоговая метрика должна получать входящие связи от тех метрик, из которых она считается.',
+      'Нажмите «Проверить» — покажу структурный разбор графа: циклы, «висящие» метрики, направление связей.'
+    ]);
+    return;
+  }
+  const lagging=c.metrics.find(m=>m.type==='lagging');
+  const lines=[`Стройте дерево сверху вниз — от опережающих показателей к итоговой метрике${lagging?` («${lagging.name}»)`:''}.`];
+  const steps=nextHints(c);
+  if(steps.length){lines.push('Ближайшие шаги:');steps.forEach(s=>lines.push('• '+s))}
+  else lines.push('Все обязательные связи уже на месте — нажмите «Проверить».');
+  hintPanel('Подсказка',c.title.replace(/^\d+\.\s*/,''),lines);
+  const flash=new Set();
+  for(const[mid,rule]of Object.entries(c.rules)){flash.add(mid);(rule.req||[]).forEach(r=>flash.add(r))}
+  pal.querySelectorAll('.pal-card').forEach(card=>{
+    if(flash.has(card.dataset.mid)){card.classList.add('hint');setTimeout(()=>card.classList.remove('hint'),1500)}
+  });
+}
+
+/* ===============================================================
+   INIT
+   =============================================================== */
+function init(){
+  CASES.forEach(c=>{
+    const o=document.createElement('option');o.value=c.id;o.textContent=c.title;
+    cSel.appendChild(o);
+  });
+  cSel.addEventListener('change',()=>loadCase(cSel.value));
+  btnC.addEventListener('click',()=>{const r=validate();showRes(r)});
+  btnCl.addEventListener('click',clearCanvas);
+  btnH.addEventListener('click',showHint);
+  ov.addEventListener('click',e=>{if(e.target===ov)hideRes()});
+  const rid=restore();
+  const startId=rid&&CASES.some(c=>c.id===rid)?rid:CASES[0].id;
+  cSel.value=startId;
+  loadCase(startId);
+}
+init();
+</script>
+</body>
+</html>
