@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
+  <defs>
+    <style>
+      text { font-family: 'Montserrat', sans-serif; fill: #0B1F33; }
+      .title { font-size: 30px; font-weight: 700; fill: #0B1F33; }
+      .label { font-size: 18px; font-weight: 700; fill: #138A3E; }
+      .body { font-size: 16px; font-weight: 400; fill: #667179; }
+      .small { font-size: 14px; font-weight: 500; fill: #667179; }
+      .card { fill: #FFFFFF; stroke: #DCE3EA; stroke-width: 2; }
+      .accent { fill: #E5F5E5; stroke: #21A038; stroke-width: 2; }
+      .source { fill: #F8FBFF; stroke: #DCE3EA; stroke-width: 2; }
+      .pill { fill: #FCCB00; opacity: 0.18; }
+    </style>
+  </defs>
+  <rect width="1400" height="820" fill="#FFFFFF"/>
+  <text x="70" y="74" class="title">Заполненная карта категорий данных: пилот ИИ для юристов</text>
+  <text x="70" y="110" class="body">Схема связывает один управленческий вопрос с минимально достаточным набором источников, проверок качества и мастер-метрикой.</text>
+
+  <rect x="70" y="160" width="280" height="170" rx="24" class="accent"/>
+  <text x="94" y="198" class="label">Бизнес-вопрос</text>
+  <text x="94" y="230" class="body">Сократил ли ИИ время</text>
+  <text x="94" y="255" class="body">рассмотрения договора минимум</text>
+  <text x="94" y="280" class="body">на 20% без искажения метрики?</text>
+  <rect x="94" y="296" width="172" height="26" rx="13" class="pill"/>
+  <text x="108" y="314" class="small">Решение: масштабировать / пауза</text>
+
+  <rect x="390" y="160" width="280" height="170" rx="24" class="card"/>
+  <text x="414" y="198" class="label">Целевая метрика</text>
+  <text x="414" y="230" class="body">Рабочие минуты</text>
+  <text x="414" y="255" class="body">на один договор</text>
+  <text x="414" y="280" class="body">и накопительный 95% ДИ</text>
+  <text x="414" y="308" class="small">Порог гипотезы: -20%</text>
+
+  <rect x="710" y="160" width="620" height="520" rx="24" class="card"/>
+  <text x="734" y="198" class="label">Источники и проверки качества</text>
+
+  <rect x="734" y="225" width="270" height="118" rx="20" class="source"/>
+  <text x="758" y="258" class="label">Лог документооборота</text>
+  <text x="758" y="286" class="body">События открытия и закрытия</text>
+  <text x="758" y="311" class="body">ID сотрудника и ID договора</text>
+  <text x="758" y="336" class="small">Базовый источник границ сессии</text>
+
+  <rect x="1036" y="225" width="270" height="118" rx="20" class="source"/>
+  <text x="1060" y="258" class="label">Лог использования ИИ</text>
+  <text x="1060" y="286" class="body">Число промптов и доля черновика</text>
+  <text x="1060" y="311" class="body">Волна пилота и факт использования</text>
+  <text x="1060" y="336" class="small">Нужен для маркировки пилотной группы</text>
+
+  <rect x="734" y="372" width="270" height="118" rx="20" class="source"/>
+  <text x="758" y="405" class="label">Реестр договоров</text>
+  <text x="758" y="433" class="body">Тип договора и сегмент контрагента</text>
+  <text x="758" y="458" class="body">Риск и маршрут согласования</text>
+  <text x="758" y="483" class="small">Дает разрезы для сводной таблицы</text>
+
+  <rect x="1036" y="372" width="270" height="118" rx="20" class="source"/>
+  <text x="1060" y="405" class="label">Правило рабочего времени</text>
+  <text x="1060" y="433" class="body">09:00-19:00, только будни</text>
+  <text x="1060" y="458" class="body">Автозакрытие по следующему открытию</text>
+  <text x="1060" y="483" class="small">Убирает простои и ночные хвосты</text>
+
+  <rect x="734" y="510" width="572" height="150" rx="24" class="accent"/>
+  <text x="758" y="545" class="label">Главная витрина и правило доверия</text>
+  <text x="758" y="576" class="body">Главная витрина: очищенная таблица рабочих</text>
+  <text x="758" y="601" class="body">сессий из лога документооборота и лога ИИ.</text>
+  <text x="758" y="626" class="body">Проверки: заполнение пустот, обрезка пересечений,</text>
+  <text x="758" y="651" class="small">вырезание нерабочего времени и длинных хвостов.</text>
+
+  <line x1="350" y1="245" x2="390" y2="245" stroke="#21A038" stroke-width="5" stroke-linecap="round"/>
+  <line x1="670" y1="245" x2="710" y2="245" stroke="#21A038" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="370" cy="245" r="8" fill="#21A038"/>
+  <circle cx="690" cy="245" r="8" fill="#21A038"/>
+
+  <rect x="70" y="380" width="600" height="300" rx="24" class="card"/>
+  <text x="94" y="418" class="label">Какие дефекты исправляет очистка</text>
+  <text x="94" y="452" class="body">1. Один юрист открывает следующий договор,</text>
+  <text x="94" y="480" class="body">не закрыв предыдущий.</text>
+  <text x="94" y="508" class="body">2. Ноутбук остается включенным, и сырой таймер</text>
+  <text x="94" y="536" class="body">идет несколько дней.</text>
+  <text x="94" y="564" class="body">3. Пустые поля ломают группировки и ручные сравнения.</text>
+  <text x="94" y="592" class="body">4. Сырое среднее выглядит хуже реальности, пока</text>
+  <text x="94" y="620" class="body">не восстановлены границы событий.</text>
+  <text x="94" y="652" class="small">Поэтому в курсе на одном кейсе подряд показываются импорт, очистка, сводная и финальное решение.</text>
+</svg>

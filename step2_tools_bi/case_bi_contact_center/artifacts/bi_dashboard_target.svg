@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1800" y2="1120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F4FAF6"/>
+      <stop offset="1" stop-color="#EEF5F3"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="36" y1="36" x2="1764" y2="1084" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F8FCF9"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1800" height="1120" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="18" stdDeviation="28" flood-color="#A7B8B0" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1120" fill="url(#bg)"/>
+  <g filter="url(#shadow)">
+    <rect x="36" y="36" width="1728" height="1048" rx="34" fill="url(#hero)" stroke="#DDE9E3" stroke-width="1.4"/>
+  </g>
+
+  <rect x="60" y="64" width="70" height="34" rx="17" fill="#EAF5EE"/>
+  <text x="95" y="86" text-anchor="middle" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em;" fill="#2E6B3F">METABASE</text>
+  <text x="152" y="87" style="font-family: Montserrat, Arial, sans-serif; font-size: 26px; font-weight: 700; fill: #17324D;">Дашборд обучения по речевой аналитике</text>
+  <text x="152" y="112" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 400; fill: #607587;">Цель: видеть одновременно качество модели, эффект обучения сотрудников и влияние на продажи</text>
+
+  <rect x="60" y="154" width="260" height="892" rx="28" style="fill: #F6FAF8; stroke: #D9E6E1; stroke-width: 1;"/>
+  <text x="88" y="194" style="font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #17324D;">Фильтры и статус</text>
+
+  <rect x="88" y="214" width="204" height="88" rx="18" fill="#FFFFFF" stroke="#DDE7E3" stroke-width="1"/>
+  <text x="106" y="240" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Период</text>
+  <text x="106" y="268" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Февраль 2025 - Июль 2025</text>
+  <rect x="106" y="278" width="74" height="16" rx="8" fill="#EAF1FF"/>
+  <rect x="184" y="278" width="48" height="16" rx="8" fill="#EAF5EE"/>
+  <rect x="236" y="278" width="36" height="16" rx="8" fill="#FFF5D9"/>
+
+  <rect x="88" y="316" width="204" height="104" rx="18" fill="#FFFFFF" stroke="#DDE7E3" stroke-width="1"/>
+  <text x="106" y="342" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Срез</text>
+  <text x="106" y="366" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Очередь: продажи карт</text>
+  <text x="106" y="388" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Команда: 48 сотрудников</text>
+  <text x="106" y="410" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Супервайзер: 1 пилотная группа</text>
+
+  <rect x="88" y="434" width="204" height="158" rx="18" fill="#2C536F"/>
+  <text x="106" y="462" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #DCEAF3;">Пилотный вывод</text>
+  <text x="106" y="496" style="font-family: Montserrat, Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #FFFFFF;">9,4%</text>
+  <text x="106" y="522" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 600; fill: #EAF4F8;">доля отклоненных находок ИИ</text>
+  <text x="106" y="552" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #F7FBFD;">Отклонений меньше,</text>
+  <text x="106" y="574" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #F7FBFD;">продажи выше базы.</text>
+
+  <rect x="88" y="598" width="204" height="188" rx="18" fill="#FFFFFF" stroke="#DDE7E3" stroke-width="1"/>
+  <text x="106" y="626" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Ключевые сигналы</text>
+  <circle cx="112" cy="652" r="5" fill="#2E6B3F"/>
+  <text x="126" y="656" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Выручка по команде растет</text>
+  <circle cx="112" cy="684" r="5" fill="#4F86F7"/>
+  <text x="126" y="688" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">ИИ находит меньше спорных ошибок</text>
+  <circle cx="112" cy="716" r="5" fill="#D9A300"/>
+  <text x="126" y="720" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Отклонения супервайзера снижаются</text>
+  <circle cx="112" cy="748" r="5" fill="#D45B5B"/>
+  <text x="126" y="752" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Есть группа риска по дисциплине</text>
+
+  <rect x="88" y="802" width="204" height="216" rx="18" fill="#FFFFFF" stroke="#DDE7E3" stroke-width="1"/>
+  <text x="106" y="830" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Что должен уметь дашборд</text>
+  <text x="106" y="862" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">1. Показать общий тренд по неделям</text>
+  <text x="106" y="890" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">2. Отделить эффект модели от эффекта обучения</text>
+  <text x="106" y="918" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">3. Дать срез по сотруднику для коучинга</text>
+  <text x="106" y="946" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">4. Подсветить, где нужен ручной разбор</text>
+  <text x="106" y="974" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">5. Сводить KPI в один экран руководителя</text>
+
+  <rect x="344" y="154" width="1388" height="892" rx="28" fill="#FFFFFF" stroke="#DDE7E3" stroke-width="1"/>
+
+  <rect x="372" y="184" width="308" height="116" rx="22" style="fill: #EAF5EE;"/>
+  <text x="398" y="214" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Выручка пилотной группы</text>
+  <text x="398" y="252" style="font-family: Montserrat, Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #17324D;">34,8 млн</text>
+  <text x="398" y="278" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #5F7382;">+8,7% к базе за 24 недели</text>
+  <path d="M570 260 L596 240 L620 248 L648 210" fill="none" stroke="#2E6B3F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="698" y="184" width="308" height="116" rx="22" style="fill: #EAF1FF;"/>
+  <text x="724" y="214" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Ошибки, найденные ИИ</text>
+  <text x="724" y="252" style="font-family: Montserrat, Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #17324D;">612</text>
+  <text x="724" y="278" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #5F7382;">-46% к старту пилота</text>
+  <path d="M892 214 C922 240 928 248 976 270" fill="none" stroke="#4F86F7" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="1024" y="184" width="308" height="116" rx="22" style="fill: #FFF5D9;"/>
+  <text x="1050" y="214" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Отклонено супервайзером</text>
+  <text x="1050" y="252" style="font-family: Montserrat, Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #17324D;">9,4%</text>
+  <text x="1050" y="278" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #5F7382;">целевая доля ниже 12%</text>
+  <path d="M1212 220 L1234 232 L1260 248 L1288 258" fill="none" stroke="#D9A300" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="1350" y="184" width="354" height="116" rx="22" style="fill: #FCECED;"/>
+  <text x="1376" y="214" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Рекомендации в обучение</text>
+  <text x="1376" y="252" style="font-family: Montserrat, Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #17324D;">1 284</text>
+  <text x="1376" y="278" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #5F7382;">исполнение рекомендаций: 83,6%</text>
+  <path d="M1578 256 L1604 228 L1632 236 L1660 208" fill="none" stroke="#D45B5B" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="372" y="324" width="848" height="344" rx="24" style="fill: #FFFFFF; stroke: #DCE7E2; stroke-width: 1.2;"/>
+  <text x="402" y="360" style="font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #17324D;">Продажи и качество модели по неделям</text>
+  <text x="402" y="384" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">На одном графике видно рост выручки, снижение спорных находок ИИ и стабилизацию процесса обучения</text>
+
+  <line x1="430" y1="622" x2="1168" y2="622" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="430" y1="566" x2="1168" y2="566" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="430" y1="510" x2="1168" y2="510" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="430" y1="454" x2="1168" y2="454" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="430" y1="398" x2="1168" y2="398" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="430" y1="398" x2="430" y2="622" stroke="#94A6B2" stroke-width="1.3"/>
+  <line x1="430" y1="622" x2="1168" y2="622" stroke="#94A6B2" stroke-width="1.3"/>
+
+  <text x="392" y="626" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">24</text>
+  <text x="392" y="570" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">28</text>
+  <text x="392" y="514" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">32</text>
+  <text x="392" y="458" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">36</text>
+  <text x="392" y="402" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">40</text>
+
+  <text x="438" y="648" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">фев</text>
+  <text x="560" y="648" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">мар</text>
+  <text x="680" y="648" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">апр</text>
+  <text x="804" y="648" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">май</text>
+  <text x="926" y="648" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">июн</text>
+  <text x="1046" y="648" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">июл</text>
+
+  <path d="M450 590 L492 548 L534 516 L576 502 L618 496 L660 468 L702 478 L744 438 L786 452 L828 428 L870 414 L912 388 L954 396 L996 352 L1038 374 L1080 326 L1122 340"
+        fill="none" stroke="#2E6B3F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M450 420 L492 430 L534 454 L576 460 L618 482 L660 496 L702 514 L744 520 L786 538 L828 548 L870 562 L912 576 L954 590 L996 596 L1038 602 L1080 608 L1122 598"
+        fill="none" stroke="#D9A300" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M450 406 L492 392 L534 430 L576 426 L618 432 L660 462 L702 468 L744 494 L786 500 L828 526 L870 544 L912 548 L954 568 L996 580 L1038 586 L1080 602 L1122 572"
+        fill="none" stroke="#4F86F7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="928" y="404" width="238" height="106" rx="18" fill="#F8FCF9" stroke="#DFE9E4" stroke-width="1"/>
+  <circle cx="952" cy="433" r="5" fill="#2E6B3F"/>
+  <text x="966" y="438" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Выручка, млн руб.</text>
+  <circle cx="952" cy="462" r="5" fill="#4F86F7"/>
+  <text x="966" y="467" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Ошибки, найденные ИИ</text>
+  <circle cx="952" cy="491" r="5" fill="#D9A300"/>
+  <text x="966" y="496" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Отклонено супервайзером</text>
+
+  <rect x="1240" y="324" width="464" height="344" rx="24" style="fill: #FFFFFF; stroke: #DCE7E2; stroke-width: 1.2;"/>
+  <text x="1270" y="360" style="font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #17324D;">Карта текущего состояния команды</text>
+  <text x="1270" y="384" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">Где масштабировать практику, а где нужен коучинг и ручной разбор</text>
+
+  <rect x="1270" y="414" width="190" height="96" rx="18" fill="#F6FAF8" stroke="#DDE7E3" stroke-width="1"/>
+  <text x="1290" y="440" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Лучшая зона</text>
+  <text x="1290" y="470" style="font-family: Montserrat, Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #17324D;">18</text>
+  <text x="1290" y="494" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #5F7382;">сотрудников уже выше целевого профиля</text>
+
+  <rect x="1484" y="414" width="190" height="96" rx="18" fill="#FFF7DF" stroke="#E8D9A8" stroke-width="1"/>
+  <text x="1504" y="440" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #6B7F8E;">Зона внимания</text>
+  <text x="1504" y="470" style="font-family: Montserrat, Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #17324D;">7</text>
+  <text x="1504" y="494" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #5F7382;">сотрудников с низким follow-up</text>
+
+  <rect x="1270" y="530" width="404" height="126" rx="18" fill="#355E79"/>
+  <text x="1294" y="558" style="font-family: Montserrat, Arial, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; fill: #DCEAF3;">Решение по экрану руководителя</text>
+  <text x="1294" y="594" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #F7FBFD;">Если линия отклонений падает, а продажи растут,</text>
+  <text x="1294" y="616" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #F7FBFD;">дашборд подтверждает, что модель и обучение улучшаются.</text>
+  <text x="1294" y="638" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #F7FBFD;">Значит, его можно использовать как постоянный мониторинг.</text>
+
+  <rect x="372" y="692" width="560" height="322" rx="24" style="fill: #FFFFFF; stroke: #DCE7E2; stroke-width: 1.2;"/>
+  <text x="402" y="728" style="font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #17324D;">Сотрудники: рекомендации и продажи</text>
+  <text x="402" y="752" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">Scatter нужен, чтобы быстро показать связь между дисциплиной выполнения рекомендаций и результатом</text>
+
+  <line x1="438" y1="968" x2="872" y2="968" stroke="#94A6B2" stroke-width="1.3"/>
+  <line x1="438" y1="812" x2="438" y2="968" stroke="#94A6B2" stroke-width="1.3"/>
+  <line x1="438" y1="930" x2="872" y2="930" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="438" y1="892" x2="872" y2="892" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="438" y1="854" x2="872" y2="854" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="506" y1="812" x2="506" y2="968" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="594" y1="812" x2="594" y2="968" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="682" y1="812" x2="682" y2="968" style="stroke: #DCE6E4; stroke-width: 1;"/>
+  <line x1="770" y1="812" x2="770" y2="968" style="stroke: #DCE6E4; stroke-width: 1;"/>
+
+  <text x="430" y="972" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">0,72</text>
+  <text x="500" y="972" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">0,76</text>
+  <text x="588" y="972" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">0,80</text>
+  <text x="676" y="972" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">0,84</text>
+  <text x="764" y="972" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">0,88</text>
+  <text x="402" y="936" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">590</text>
+  <text x="402" y="898" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">630</text>
+  <text x="402" y="860" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">670</text>
+  <text x="402" y="822" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7B8C9A;">710</text>
+
+  <line x1="456" y1="924" x2="848" y2="848" stroke="#7C8A95" stroke-width="2.5" stroke-dasharray="10 8"/>
+  <circle cx="488" cy="924" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="524" cy="904" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="552" cy="930" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="582" cy="888" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="610" cy="900" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="638" cy="870" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="664" cy="852" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="690" cy="884" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="718" cy="860" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="742" cy="836" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="770" cy="854" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="798" cy="828" r="7" fill="#3C9C63" opacity="0.85"/>
+  <circle cx="824" cy="842" r="7" fill="#3C9C63" opacity="0.85"/>
+
+  <text x="550" y="1002" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Индекс следования рекомендациям</text>
+  <text x="352" y="884" transform="rotate(-90 352 884)" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Средняя выручка на сотрудника, тыс. руб.</text>
+
+  <rect x="956" y="692" width="430" height="322" rx="24" style="fill: #FFFFFF; stroke: #DCE7E2; stroke-width: 1.2;"/>
+  <text x="986" y="728" style="font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #17324D;">Топ и зона риска</text>
+  <text x="986" y="752" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">Бар-чарт помогает быстро отделить сотрудников для масштабирования практики от тех, кому нужен коучинг</text>
+
+  <text x="986" y="802" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Никита Федоров</text>
+  <rect x="1144" y="786" width="188" height="18" rx="9" fill="#2E6B3F"/>
+  <text x="986" y="846" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Юлия Иванова</text>
+  <rect x="1144" y="830" width="172" height="18" rx="9" fill="#3A8D53"/>
+  <text x="986" y="890" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">София Кузнецова</text>
+  <rect x="1144" y="874" width="154" height="18" rx="9" fill="#4A9D63"/>
+  <text x="986" y="934" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Группа риска</text>
+  <rect x="1144" y="918" width="92" height="18" rx="9" fill="#D9A300"/>
+  <text x="986" y="978" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Ручной разбор</text>
+  <rect x="1144" y="962" width="66" height="18" rx="9" fill="#D45B5B"/>
+
+  <text x="1144" y="780" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">900</text>
+  <text x="1298" y="780" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">1 100</text>
+  <text x="1144" y="1004" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Сводный score сотрудника</text>
+
+  <rect x="1410" y="692" width="294" height="322" rx="24" style="fill: #FFFFFF; stroke: #DCE7E2; stroke-width: 1.2;"/>
+  <text x="1440" y="728" style="font-family: Montserrat, Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #17324D;">Карточка сотрудника</text>
+  <text x="1440" y="752" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">В drill-down блоке руководитель должен видеть минимум четыре показателя</text>
+
+  <rect x="1440" y="784" width="234" height="44" rx="14" fill="#F8FCF9"/>
+  <text x="1460" y="811" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Следование рекомендациям</text>
+  <text x="1638" y="811" text-anchor="end" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500;" fill="#2E6B3F">84%</text>
+
+  <rect x="1440" y="842" width="234" height="44" rx="14" fill="#F8FCF9"/>
+  <text x="1460" y="869" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Продажи за неделю</text>
+  <text x="1638" y="869" text-anchor="end" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500;" fill="#2E6B3F">1,02 млн</text>
+
+  <rect x="1440" y="900" width="234" height="44" rx="14" fill="#F8FCF9"/>
+  <text x="1460" y="927" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Ошибки, найденные ИИ</text>
+  <text x="1638" y="927" text-anchor="end" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500;" fill="#4F86F7">11</text>
+
+  <rect x="1440" y="958" width="234" height="44" rx="14" fill="#F8FCF9"/>
+  <text x="1460" y="985" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500; fill: #42586B;">Отклонено супервайзером</text>
+  <text x="1638" y="985" text-anchor="end" style="font-family: Montserrat, Arial, sans-serif; font-size: 13px; font-weight: 500;" fill="#D9A300">1</text>
+
+  <text x="1440" y="1042" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">На одном экране соединены мониторинг,</text>
+  <text x="1440" y="1060" style="font-family: Montserrat, Arial, sans-serif; font-size: 11px; font-weight: 500; fill: #7D8F9D;">качество модели и действия по обучению.</text>
+</svg>

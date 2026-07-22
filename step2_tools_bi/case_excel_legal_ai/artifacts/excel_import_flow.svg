@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
+  <defs>
+    <style>
+      text { font-family: 'Montserrat', sans-serif; fill: #0B1F33; }
+      .title { font-size: 34px; font-weight: 700; fill: #0B1F33; }
+      .label { font-size: 22px; font-weight: 700; fill: #138A3E; }
+      .body { font-size: 17px; font-weight: 500; fill: #667179; }
+      .card { fill: #FFFFFF; stroke: #DCE3EA; stroke-width: 2; }
+      .accent { fill: #E5F5E5; stroke: #21A038; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1400" height="820" fill="#FFFFFF"/>
+  <text x="72" y="78" class="title">Как загружать данные в Excel</text>
+  <text x="72" y="116" class="body">Для занятия удобно показать три уровня зрелости: быстрый импорт, встроенную автоматизацию Microsoft и кодовый сценарий.</text>
+
+  <rect x="72" y="190" width="350" height="420" rx="26" class="accent"/>
+  <text x="102" y="236" class="label">1. Из CSV</text>
+  <text x="102" y="276" class="body">Команда: Данные → Из текста/CSV</text>
+  <text x="102" y="304" class="body">Самый быстрый путь показать импорт</text>
+  <text x="102" y="352" class="body">Когда подходит:</text>
+  <text x="102" y="382" class="body">• разовая выгрузка</text>
+  <text x="102" y="410" class="body">• быстрый старт на занятии</text>
+  <text x="102" y="438" class="body">• нужно просто открыть таблицу</text>
+
+  <rect x="524" y="190" width="350" height="420" rx="26" class="card"/>
+  <text x="554" y="236" class="label">2. Power Query</text>
+  <text x="554" y="276" class="body">Встроенный контур получения</text>
+  <text x="554" y="304" class="body">и преобразования данных в Excel</text>
+  <text x="554" y="352" class="body">Когда подходит:</text>
+  <text x="554" y="382" class="body">• регулярный импорт из файлов и БД</text>
+  <text x="554" y="410" class="body">• повторяемая очистка без кода</text>
+  <text x="554" y="438" class="body">• обновление отчета в один клик</text>
+
+  <rect x="976" y="190" width="350" height="420" rx="26" class="card"/>
+  <text x="1006" y="236" class="label">3. VBA / Office Scripts</text>
+  <text x="1006" y="276" class="body">Плюс при необходимости</text>
+  <text x="1006" y="304" class="body">Power Automate для расписания</text>
+  <text x="1006" y="352" class="body">Когда подходит:</text>
+  <text x="1006" y="382" class="body">• внешний источник нестандартный</text>
+  <text x="1006" y="410" class="body">• нужны кнопки и макросы</text>
+  <text x="1006" y="438" class="body">• нужен сценарий для рутины</text>
+
+  <path d="M422 400 C456 400 480 400 524 400" stroke="#21A038" stroke-width="8" stroke-linecap="round"/>
+  <path d="M514 378 L554 400 L514 422" fill="#21A038"/>
+  <path d="M874 400 C908 400 932 400 976 400" stroke="#21A038" stroke-width="8" stroke-linecap="round"/>
+  <path d="M966 378 L1006 400 L966 422" fill="#21A038"/>
+
+  <rect x="72" y="648" width="1254" height="110" rx="26" class="accent"/>
+  <text x="104" y="700" class="body">На занятии логично начать с CSV, затем назвать Power Query как «правильный»</text>
+  <text x="104" y="730" class="body">способ повторяемого импорта, а VBA / Office Scripts показать как следующий уровень автоматизации.</text>
+</svg>

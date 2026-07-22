@@ -1,0 +1,6 @@
+kmeans_cluster,clients,avg_monthly_spend_rub,utilization_pct,full_pay_ratio_pct,overdue_events_6m,cash_advance_share_pct,installment_share_pct,digital_engagement_index,deposit_balance_rub,total_margin_rub
+0,621,139280.01,34.78,96.67,0.11,1.35,4.04,82.56,311375.53,1122.29
+1,296,72051.78,80.28,23.69,1.56,28.65,17.87,47.34,47962.35,-425.89
+2,430,41687.55,16.09,94.39,0.09,1.1,2.18,52.57,545682.28,234.25
+3,513,106387.26,45.72,71.74,0.25,5.25,38.0,73.57,175871.27,1426.96
+4,640,84973.81,73.76,30.75,0.43,19.96,20.31,59.26,74484.78,2183.17

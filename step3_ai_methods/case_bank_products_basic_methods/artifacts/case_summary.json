@@ -1,0 +1,22 @@
+{
+  "rows": 1440,
+  "columns": 13,
+  "products": 4,
+  "regions": 5,
+  "segments": 3,
+  "start_month": "2024-01",
+  "end_month": "2025-12",
+  "top_missing_field": "средний_чек_тыс_руб",
+  "top_missing_share": 5.49,
+  "marketing_outliers": 27,
+  "income_outliers": 44,
+  "top_income_product": "Ипотека",
+  "top_income_region": "Центр",
+  "top_segment": "Массовый",
+  "regression_slope_per_1000": 48.9,
+  "regression_r2": 0.659,
+  "regression_mae": 13.2,
+  "forecast_base": 505,
+  "forecast_high": 534,
+  "first_conclusion": "Связка «Ипотека / Центр» дает самый большой накопленный доход."
+}

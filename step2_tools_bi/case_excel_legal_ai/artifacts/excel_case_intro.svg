@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820">
+  <defs>
+    <style>
+      text { font-family: 'Montserrat', sans-serif; fill: #0B1F33; }
+      .title { font-size: 34px; font-weight: 700; fill: #0B1F33; }
+      .label { font-size: 20px; font-weight: 700; fill: #138A3E; }
+      .body { font-size: 17px; font-weight: 500; fill: #667179; }
+      .card { fill: #FFFFFF; stroke: #DCE3EA; stroke-width: 2; }
+      .accent { fill: #E5F5E5; stroke: #21A038; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect width="1400" height="820" fill="#FFFFFF"/>
+  <text x="74" y="78" class="title">Кейс 1. Банковский пилот ИИ для юристов</text>
+  <text x="74" y="116" class="body">Цель занятия: на одном примере показать импорт CSV, очистку, сводные таблицы и финальный управленческий вывод.</text>
+
+  <rect x="74" y="170" width="310" height="182" rx="24" class="accent"/>
+  <text x="100" y="212" class="label">Бизнес-задача</text>
+  <text x="100" y="246" class="body">Сократить время проверки</text>
+  <text x="100" y="272" class="body">договоров в юридическом блоке</text>
+  <text x="100" y="298" class="body">без потери управляемости процесса</text>
+
+  <rect x="418" y="170" width="310" height="182" rx="24" class="card"/>
+  <text x="444" y="212" class="label">Гипотеза пилота</text>
+  <text x="444" y="246" class="body">Система с ИИ снижает время</text>
+  <text x="444" y="272" class="body">рассмотрения договора минимум</text>
+  <text x="444" y="298" class="body">на 20% относительно ручного режима</text>
+
+  <rect x="762" y="170" width="260" height="182" rx="24" class="card"/>
+  <text x="788" y="212" class="label">Базовая метрика</text>
+  <text x="788" y="246" class="body">Рабочие минуты</text>
+  <text x="788" y="272" class="body">на один договор</text>
+  <text x="788" y="298" class="body">и доверительный интервал</text>
+
+  <rect x="1056" y="170" width="270" height="182" rx="24" class="card"/>
+  <text x="1082" y="212" class="label">Почему кейс хороший</text>
+  <text x="1082" y="246" class="body">Есть пропуски, наложения</text>
+  <text x="1082" y="272" class="body">сессий и длинные хвосты</text>
+  <text x="1082" y="298" class="body">из-за нерабочего времени</text>
+
+  <path d="M226 404 C226 490 226 490 226 560" stroke="#21A038" stroke-width="8" stroke-linecap="round"/>
+  <path d="M227 558 L210 526 L244 526" fill="#21A038"/>
+  <path d="M571 404 C571 490 571 490 571 560" stroke="#21A038" stroke-width="8" stroke-linecap="round"/>
+  <path d="M572 558 L555 526 L589 526" fill="#21A038"/>
+  <path d="M892 404 C892 490 892 490 892 560" stroke="#21A038" stroke-width="8" stroke-linecap="round"/>
+  <path d="M893 558 L876 526 L910 526" fill="#21A038"/>
+  <path d="M1191 404 C1191 490 1191 490 1191 560" stroke="#21A038" stroke-width="8" stroke-linecap="round"/>
+  <path d="M1192 558 L1175 526 L1209 526" fill="#21A038"/>
+
+  <rect x="74" y="566" width="1252" height="168" rx="24" class="accent"/>
+  <text x="104" y="610" class="label">Что именно показываем в классе</text>
+  <text x="104" y="646" class="body">1. Импортируем большую CSV-выгрузку в Excel.</text>
+  <text x="104" y="674" class="body">2. Формулами восстанавливаем события закрытия, убираем мусор и вырезаем нерабочее время.</text>
+  <text x="104" y="702" class="body">3. Собираем сводную и финальный график, где доверительный интервал сужается и решение становится надежным.</text>
+</svg>

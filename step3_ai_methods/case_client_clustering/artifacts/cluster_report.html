@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>Кейс по кластеризации клиентов банка</title>
+  <style>
+    :root {
+      --green: #21A038;
+      --green-dark: #138A3E;
+      --yellow: #FCCB00;
+      --navy: #0B1F33;
+      --muted: #667179;
+      --line: #DCE3EA;
+      --bg: #F4F7F9;
+    }
+    body {
+      margin: 0;
+      font-family: Montserrat, Arial, sans-serif;
+      background: linear-gradient(180deg, #f8fbfd 0%, #ffffff 100%);
+      color: var(--navy);
+    }
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 36px 28px 48px;
+    }
+    h1 { margin: 0 0 8px; font-size: 34px; }
+    p.lead { margin: 0 0 28px; color: var(--muted); font-size: 17px; line-height: 1.45; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(16, 32, 48, 0.06);
+    }
+    .card h2 { margin: 0 0 8px; font-size: 20px; }
+    .card p { margin: 0 0 14px; color: var(--muted); line-height: 1.45; }
+    img { width: 100%; border-radius: 14px; display: block; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+    }
+    th {
+      background: #f2f8f4;
+      color: var(--green-dark);
+    }
+    .target {
+      background: linear-gradient(135deg, rgba(33,160,56,0.09), rgba(252,203,0,0.10));
+      border: 1px solid rgba(33,160,56,0.22);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Кейс по кластеризации клиентов банка</h1>
+    <p class="lead">Одинаковый уровень трат может скрывать совершенно разную маржинальность. Этот кейс показывает, почему простая сегментация по обороту или просрочке пропускает лучший сценарий контакта.</p>
+    <div class="grid">
+      <section class="card">
+        <h2>2D-проекция</h2>
+        <p>На отдельных признаках кластеры перекрываются, но после многомерного преобразования поведенческие группы становятся видимыми.</p>
+        <img src="cluster_scatter_2d.png" alt="Кластеры в 2D" />
+      </section>
+      <section class="card">
+        <h2>3D-проекция</h2>
+        <p>Третья компонента разводит клиентов с похожим оборотом, но разным фондированием и разной итоговой маржой.</p>
+        <img src="cluster_scatter_3d.png" alt="Кластеры в 3D" />
+      </section>
+      <section class="card">
+        <h2>Портреты кластеров</h2>
+        <p>Один из кластеров сочетает высокий оборот, хорошую дисциплину платежей и слабую маржу. Именно он подходит для премиального или инвестиционного контакта.</p>
+        <img src="cluster_profiles.png" alt="Портреты кластеров" />
+      </section>
+      <section class="card target">
+        <h2>Рекомендуемый целевой кластер: 0.0</h2>
+        <p>Этот кластер много тратит и держит риск низким, но прямая карточная маржа остается слабой. Банку не стоит продвигать долг; лучше тестировать премиальный travel- или инвестиционный оффер.</p>
+        <table>
+          <thead>
+            <tr><th>Кластер</th><th>Клиенты</th><th>Средний оборот</th><th>Полная оплата</th><th>Утилизация</th><th>Средняя маржа</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>621</td><td>139,280</td><td>96.7%</td><td>34.8%</td><td>1,122</td></tr>
+<tr><td>1</td><td>296</td><td>72,052</td><td>23.7%</td><td>80.3%</td><td>-426</td></tr>
+<tr><td>2</td><td>430</td><td>41,688</td><td>94.4%</td><td>16.1%</td><td>234</td></tr>
+<tr><td>3</td><td>513</td><td>106,387</td><td>71.7%</td><td>45.7%</td><td>1,427</td></tr>
+<tr><td>4</td><td>640</td><td>84,974</td><td>30.8%</td><td>73.8%</td><td>2,183</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <section class="card">
+      <h2>Превью списка для контакта</h2>
+      <p>Это первые клиенты, которых на занятии можно выгрузить для коммуникации.</p>
+      <table>
+        <thead>
+          <tr><th>Клиент</th><th>Средний оборот</th><th>Депозиты</th><th>Маржа</th><th>Рекомендованное действие</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CL00232</td><td>210,108</td><td>449,720</td><td>1,589</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00407</td><td>200,789</td><td>239,961</td><td>1,523</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00435</td><td>200,219</td><td>324,145</td><td>2,005</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00275</td><td>197,234</td><td>356,180</td><td>1,816</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00297</td><td>192,929</td><td>258,934</td><td>1,570</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00098</td><td>189,271</td><td>151,878</td><td>2,099</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00309</td><td>189,223</td><td>390,245</td><td>1,587</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00553</td><td>188,608</td><td>224,996</td><td>1,862</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00295</td><td>188,195</td><td>350,590</td><td>1,449</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00579</td><td>185,693</td><td>357,310</td><td>732</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00262</td><td>184,685</td><td>192,524</td><td>1,919</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+<tr><td>CL00348</td><td>183,060</td><td>217,218</td><td>1,516</td><td>Предложить премиальный travel-пакет или инвестиционный оффер</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>
