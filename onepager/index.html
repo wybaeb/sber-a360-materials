@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Аналитика 360 · Учебный OnePager (Шаги 1–4)</title>
+<style>
+  :root{
+    --green:#20BA72; --green-dark:#138A3E; --green-soft:#EAF9F1; --green-line:#C9E7D8;
+    --lime:#D9FFA7; --text:#2E3641; --muted:#6B7580; --bg:#FFFFFF; --surface:#F5FAF8;
+    --code-bg:#F2F7F5;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SB Sans Text","Segoe UI",Arial,sans-serif;
+       color:var(--text);background:var(--bg);line-height:1.5;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 60px}
+  header{background:linear-gradient(115deg,#1B7FD6 0%,#20BA72 55%,#7CD618 100%);color:#fff;padding:34px 0 30px;margin-bottom:26px}
+  header .wrap{padding-bottom:0}
+  .kicker{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+  h1{font-size:30px;font-weight:300;margin:8px 0 10px;line-height:1.15}
+  header p{margin:0;max-width:640px;font-size:15px;opacity:.92}
+  h2{font-size:20px;margin:34px 0 6px;font-weight:700}
+  h2 .num{color:var(--green);font-weight:800;margin-right:8px}
+  .lead{color:var(--muted);margin:0 0 14px}
+  h3{font-size:15px;margin:18px 0 6px}
+  a{color:var(--green-dark)}
+  .route{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:12px;margin:14px 0}
+  .card{border:1px solid var(--green-line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+  .card .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+             color:#fff;background:var(--green);border-radius:4px;padding:2px 7px;margin-bottom:8px}
+  .card h4{margin:0 0 6px;font-size:15px}
+  .card p{margin:0 0 8px;font-size:13.5px;color:var(--muted)}
+  .card ul{margin:6px 0 0 16px;padding:0;font-size:13px;color:var(--muted)}
+  .card li{margin-bottom:3px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--green-line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--green-soft);font-weight:700}
+  .prompt{border:1px solid var(--green-line);border-radius:10px;margin:14px 0;overflow:hidden}
+  .prompt > .head{background:var(--green-soft);padding:10px 14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .prompt .stage{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green-dark)}
+  .prompt .title{font-weight:700;font-size:15px}
+  .prompt .when{color:var(--muted);font-size:13px;margin-left:auto}
+  .prompt pre{margin:0;padding:14px;background:var(--code-bg);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+              font-size:12.5px;line-height:1.55;white-space:pre-wrap;word-break:break-word;border-top:1px solid var(--green-line)}
+  .prompt .check{padding:10px 14px;font-size:13px;color:var(--muted);border-top:1px dashed var(--green-line);background:#fff}
+  .prompt .check b{color:var(--text)}
+  .copy{margin-left:auto;font-size:12px;font-weight:700;color:var(--green-dark);background:#fff;border:1px solid var(--green-line);
+        border-radius:6px;padding:3px 10px;cursor:pointer;font-family:inherit}
+  .copy:active{background:var(--green-soft)}
+  .warn{border-left:4px solid #E0A21A;background:#FFF8E7;padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px}
+  .note{border-left:4px solid var(--green);background:var(--green-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px}
+  ol.rules{margin:10px 0 0 20px;padding:0}
+  ol.rules li{margin-bottom:5px}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--green-line);color:var(--muted);font-size:13px}
+  code{background:var(--code-bg);border-radius:3px;padding:1px 5px;font-size:12.5px}
+  @media (max-width:640px){h1{font-size:24px}.prompt .when{margin-left:0;flex-basis:100%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="kicker">Аналитика 360 · Блок «Финансы» · Шаги 1–4 · Карпов Курсы</div>
+    <h1>Учебный OnePager практических занятий</h1>
+    <p>Одна страница на весь курс: что вы делаете на каждом шаге, какой артефакт уносите
+       и какими промптами работаете с данными. Держите открытой во время встреч.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+<h2><span class="num">1</span>Ваш маршрут: четыре артефакта</h2>
+<p class="lead">Каждая встреча заканчивается одним рабочим артефактом. Следующая начинается с него —
+   поэтому пропущенное задание тормозит не «домашку», а сам проект.</p>
+
+<div class="route">
+  <div class="card">
+    <span class="tag">A1 · после Шага 1</span>
+    <h4>Карта источников данных подразделения</h4>
+    <p>5–10 показателей, по которым вы реально принимаете решения: источник, владелец, частота, доверие, контекст.</p>
+    <ul>
+      <li>Шаблон: <a href="../step1_data_landscape/template_data_source_map.md">template_data_source_map.md</a></li>
+      <li>Есть все три контекста: продукт / процесс / бизнес</li>
+      <li>Отмечена «дыра» и конфликт источников, выбран master-source</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="tag">A2 · после Шага 2</span>
+    <h4>Карточка задачи для GigaChat</h4>
+    <p>Одна реальная задача вашего подразделения: данные из карты A1, выбранный маршрут и первый промпт.</p>
+    <ul>
+      <li>Шаблон: <a href="../step2_tools_bi/template_gigachat_task.md">template_gigachat_task.md</a></li>
+      <li>Маршрут обоснован: Excel+ИИ / BI / GigaChat+Python</li>
+      <li>Промпт содержит роль, контекст, задачу и формат ответа</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="tag">A3 · после Шага 3</span>
+    <h4>Объект изменений и проблема</h4>
+    <p>Что именно вы меняете (продукт / процесс / бизнес-инициатива) и чем проблема подтверждается в данных.</p>
+    <ul>
+      <li>Шаблон: <a href="../step3_ai_methods/template_change_object.md">template_change_object.md</a></li>
+      <li>Проверено на корреляцию≠причинность, базу сравнения, ложный всплеск</li>
+      <li>Названы 1–2 метрики, где проблема видна</li>
+    </ul>
+  </div>
+  <div class="card">
+    <span class="tag">A4 · после Шага 4</span>
+    <h4>Презентация аналитического проекта</h4>
+    <p>5–7 слайдов: проблема → метрика → данные → инструмент → анализ → вывод → эффект.</p>
+    <ul>
+      <li>Каркас: <a href="../step4_project/template_project_presentation.md">template_project_presentation.md</a></li>
+      <li>Дерево метрик: опережающие → запаздывающие</li>
+      <li>Финэффект посчитан, допущения выписаны</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="num">2</span>Материалы по шагам</h2>
+<table>
+  <tr><th style="width:14%">Шаг</th><th style="width:36%">Что открываем на встрече</th><th style="width:26%">Данные</th><th style="width:24%">Задание</th></tr>
+  <tr>
+    <td><b>Шаг 1</b><br>Ландшафт данных</td>
+    <td>Разбор карты категорий данных на банковских примерах</td>
+    <td>Ваши собственные показатели</td>
+    <td><a href="../step1_data_landscape/">Карта источников</a></td>
+  </tr>
+  <tr>
+    <td><b>Шаг 2</b><br>Инструменты и BI</td>
+    <td><a href="../step2_tools_bi/case_excel_legal_ai/">Кейс «Пилот ИИ для юристов»</a> (Excel + ИИ)<br>
+        <a href="../step2_tools_bi/case_bi_contact_center/">Кейс «Речевая аналитика контакт-центра»</a> (BI-стенд)<br>
+        <a href="../step2_tools_bi/L2.1_sheets_formulas.ipynb">L2.1 — формулы через ИИ</a>,
+        <a href="../step2_tools_bi/L4.6_metabase_agent.ipynb">L4.6 — дашборд через API</a></td>
+    <td>82 тыс. строк договоров (синтетика);<br>речевая аналитика: 48 сотрудников × 24 недели;<br><code>synthetic_sales.csv</code></td>
+    <td><a href="../step2_tools_bi/">Задача для GigaChat</a></td>
+  </tr>
+  <tr>
+    <td><b>Шаг 3</b><br>ИИ и базовые методы</td>
+    <td><a href="../step3_ai_methods/L2.4_eda_7steps.ipynb">EDA за 7 шагов с ИИ</a><br>
+        <a href="../step3_ai_methods/case_client_clustering/">Кластеризация клиентов банка (K-means)</a><br>
+        <a href="../step3_ai_methods/case_bank_products_basic_methods/">Базовые методы на банковских продуктах</a></td>
+    <td><code>bank_client_behavior.csv</code>,<br><code>bank_products_sales.csv</code>,<br><code>synthetic_sales.csv</code></td>
+    <td><a href="../step3_ai_methods/">Объект изменений</a></td>
+  </tr>
+  <tr>
+    <td><b>Шаг 4</b><br>Проектная работа</td>
+    <td><a href="../step4_project/metric_tree_trainer.html">Тренажёр «дерево метрик»</a> (на потоке — SCORM в LMS Пульс)<br>
+        <a href="../step4_project/L2.6_financial_model.ipynb">Ноутбук финансовой модели</a></td>
+    <td>Данные вашего проекта</td>
+    <td><a href="../step4_project/">Презентация проекта</a></td>
+  </tr>
+</table>
+
+<div class="warn">
+  <b>Про данные.</b> Все учебные датасеты — синтетические, сгенерированы для обучения.
+  В ИИ-ассистента не загружайте реальные клиентские, персональные и внутренние данные банка:
+  на встрече работайте на учебных выгрузках, а свои задачи описывайте словами и обезличенными примерами.
+</div>
+
+<h2><span class="num">3</span>Образцы промптов по этапам обработки данных</h2>
+<p class="lead">Порядок повторяет реальный маршрут работы с данными. Промпты писались под GigaChat,
+   но переносятся в любой ассистент без изменений — они не про инструмент, а про постановку задачи.
+   Кнопка «копировать» рядом с каждым.</p>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 0</span><span class="title">Постановка задачи</span>
+    <span class="when">перед любым анализом</span><button class="copy">копировать</button></div>
+  <pre>Ты — аналитик данных банка. Помоги мне корректно поставить аналитическую задачу.
+
+Роль: я руководитель [подразделение / продукт].
+Решение, которое мне нужно принять: [какое именно и к какому сроку].
+Что я уже знаю: [факты, цифры, наблюдения].
+
+Задай мне 5 уточняющих вопросов, без ответа на которые задачу решать рано.
+Затем сформулируй задачу в виде: вопрос → метрика → срез → период → формат результата.</pre>
+  <div class="check"><b>Что проверить в ответе:</b> метрика измерима и у неё есть владелец; срез и период
+    названы конкретно; формат результата — то, что вы реально понесёте на совещание.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 1</span><span class="title">Карта источников данных</span>
+    <span class="when">задание Шага 1</span><button class="copy">копировать</button></div>
+  <pre>Ты — аналитик данных банка. Помоги руководителю подразделения «[название]»
+составить карту источников данных.
+
+Вот показатели, которыми я управляю: [список 5–10 показателей].
+
+Для каждого предложи:
+1) вероятные источники (система / отчёт / человек),
+2) типовые проблемы качества именно для такого источника,
+3) вопросы, которые стоит задать владельцу данных.
+
+Ответ — таблицей. В конце отдельно перечисли показатели, по которым, судя по
+описанию, данные могут расходиться между системами.</pre>
+  <div class="check"><b>Что проверить:</b> ИИ не знает ваш ландшафт — он предлагает гипотезы.
+    Источники подтверждайте у владельцев; «расхождения» — это кандидаты на выбор master-source.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 2</span><span class="title">Загрузка и первый осмотр</span>
+    <span class="when">Шаг 2–3, начало любого анализа</span><button class="copy">копировать</button></div>
+  <pre>У меня файл [CSV / Excel] с данными: [краткое описание].
+Столбцы: [перечислить реальные имена столбцов]. Примерно [N] строк за [период].
+
+Проведи первый осмотр: размер, типы столбцов, describe по числовым,
+количество пропусков и дубликатов по каждому столбцу.
+Перед каждым блоком кода объясни, что и зачем делаешь; после — прокомментируй результат.
+
+Не делай выводов о качестве данных, пока не покажешь цифры.</pre>
+  <div class="check"><b>Что проверить:</b> совпадает ли число строк с ожидаемым; нет ли столбца,
+    который «прочитался» текстом вместо числа или даты — это самая частая причина неверных сумм.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 3</span><span class="title">Очистка: пропуски, дубли, типы</span>
+    <span class="when">Шаг 2, кейс «Excel + ИИ»</span><button class="copy">копировать</button></div>
+  <pre>Данные те же. Очисти их и объясни каждое решение:
+
+1. Дубликаты: найди по [ключ, например order_id / номер договора], покажи примеры,
+   удали и скажи, сколько строк потеряно.
+2. Пропуски: по каждому столбцу — сколько и почему они могли возникнуть.
+   Предложи вариант (удалить / заполнить медианой / оставить как «неизвестно»)
+   и обоснуй именно для этого столбца, а не вообще.
+3. Типы: приведи даты к datetime, числа к числам, покажи строки, где преобразование не удалось.
+4. Несогласованные категории: найди варианты написания одного значения
+   (регистр, пробелы, синонимы) и предложи единый справочник.
+
+Итог — таблица «было / стало» по числу строк и по каждому исправлению.</pre>
+  <div class="check"><b>Что проверить:</b> удалённые строки — не самые ценные ли это записи;
+    заполнение пропусков средним по столбцу с длинным хвостом искажает картину — для денег берите медиану.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 4</span><span class="title">Агрегация и сводные</span>
+    <span class="when">Шаг 2, продуктовые метрики</span><button class="copy">копировать</button></div>
+  <pre>У меня таблица [описание]. Столбцы: [перечислить]. Задача: [что посчитать].
+Дай формулы и инструкции пошагово — я работаю в [Excel / Google Sheets].
+
+Примеры задач, которые мне нужны:
+— когортный анализ по месяцу первой сделки, retention по месяцам в %;
+— ABC-анализ: группа A — 80 % выручки, B — 15 %, C — 5 %, добавь столбец с группой;
+— динамика ключевой метрики по месяцам с сопоставимым периодом прошлого года.
+
+Указывай реальные имена столбцов и диапазоны. Если задача решается сводной таблицей —
+скажи об этом прямо, а не выдумывай формулу.</pre>
+  <div class="check"><b>Что проверить:</b> пересчитайте одну строку руками. Если сумма по сводной
+    не сходится с общей — почти всегда виноваты дубли или отфильтрованные пропуски.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 5</span><span class="title">Разведочный анализ (EDA) за 7 шагов</span>
+    <span class="when">Шаг 3, кейс «GigaChat для аналитики»</span><button class="copy">копировать</button></div>
+  <pre>Ты — аналитик данных. Проведи разведочный анализ (EDA) приложенного датасета.
+Веди трассируемые рассуждения: перед каждым блоком кода объясняй, что и зачем делаешь,
+после — комментируй вывод.
+
+Пройди по шагам:
+1. Загрузка и осмотр: head, info, dtypes, describe; приведи даты к datetime.
+2. Пропуски и дубликаты: посчитай, удали дубли по [ключ], реши, что делать с пропусками.
+3. Распределения: гистограммы ключевых метрик с медианой, boxplot по категориям.
+4. Выбросы: метод IQR (Q1, Q3, границы ±1.5·IQR) + z-score; прими ОСОЗНАННОЕ решение,
+   что отсечь, а что — реальные бизнес-данные (крупный клиент — не выброс).
+5. Корреляции: матрица + явная оговорка «корреляция ≠ причинность».
+6. Сезонность: помесячная динамика (resample), паттерны по дням недели.
+7. Гипотезы: таблица из ≥5 строк — гипотеза / что проверить / какое действие.
+
+Не принимай выводы слепо: проверяй результат на нескольких строках вручную
+и отмечай, где он требует перепроверки.</pre>
+  <div class="check"><b>Что проверить:</b> есть ли в ответе хотя бы одна гипотеза, которую можно
+    проверить на следующей неделе. Если все «гипотезы» — это пересказ графиков, промпт нужно уточнить.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 6</span><span class="title">Сегментация клиентов</span>
+    <span class="when">Шаг 3, кейс «GigaChat + Python»</span><button class="copy">копировать</button></div>
+  <pre>Напиши Python-код для Jupyter Notebook.
+Данные: CSV с поведением клиентов. Столбцы: [перечислить].
+
+Задача: сегментировать клиентов методом K-means.
+1. Отбери и отмасштабируй признаки, объясни выбор.
+2. Подбери число кластеров (метод локтя + силуэт), покажи графики.
+3. Построй 2D и 3D-визуализацию сегментов.
+4. Дай профиль каждого сегмента управленческим языком: кто это, чем отличается,
+   что с ним делать.
+5. Собери shortlist клиентов целевого сегмента для кампании.
+
+Результат — таблица профилей и файл со списком клиентов.</pre>
+  <div class="check"><b>Что проверить:</b> профиль сегмента должен читаться без цифр модели.
+    Если сегмент нельзя описать одной фразой — их слишком много, уменьшите число кластеров.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 7</span><span class="title">Проверка отклонения перед выводом</span>
+    <span class="when">Шаг 3, кейс «Анализ отклонений»</span><button class="copy">копировать</button></div>
+  <pre>У нас [метрика] изменилась на [X %] за [период]. Мы в это время [что делали].
+
+Прежде чем принимать это за эффект наших действий, проверь три вещи и по каждой дай вердикт:
+1. База сравнения: сопоставим ли период (число рабочих дней, сезон, разовые сделки)?
+2. Ложный всплеск: не объясняется ли изменение одним-двумя крупными событиями?
+3. Достаточность данных: хватает ли объёма, чтобы отличить изменение от обычного разброса?
+
+Затем найди внешние факторы, которые могли повлиять: сезонность, действия конкурентов,
+регуляторные изменения, праздники, макроэкономика, собственные кампании.
+Для каждого фактора укажи: вероятность, направление и масштаб влияния.
+
+В конце раздели выводы на три уровня: ФАКТ / ИНТЕРПРЕТАЦИЯ / ГИПОТЕЗА.</pre>
+  <div class="check"><b>Что проверить:</b> всё, что ИИ отнёс к «факту», должно быть подтверждено цифрой
+    из ваших данных. Остальное — материал для проверки, а не для доклада.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 8</span><span class="title">Дерево метрик проекта</span>
+    <span class="when">Шаг 4, тренажёр</span><button class="copy">копировать</button></div>
+  <pre>Объект изменений: [продукт / процесс / бизнес-инициатива].
+Проблема: [формулировка из задания Шага 3].
+
+Построй дерево метрик:
+— на верхнем уровне 1 запаздывающая метрика (итог, который увидит бизнес);
+— под ней 3–5 опережающих, на которые я могу влиять на этой неделе;
+— для каждой опережающей объясни, через какую связь она влияет на верхнюю.
+
+Отдельно отметь метрики, для которых у меня, скорее всего, нет данных,
+и предложи, как их начать собирать без доработки систем.</pre>
+  <div class="check"><b>Что проверить:</b> связь «опережающая → запаздывающая» должна объясняться
+    одной фразой. Если объяснение требует абзаца — между ними есть пропущенное звено.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 9</span><span class="title">Финансовая модель эффекта</span>
+    <span class="when">Шаг 4, финмодель</span><button class="copy">копировать</button></div>
+  <pre>Помоги посчитать ожидаемый эффект проекта.
+
+Что меняем: [объект и суть изменения].
+Ключевая метрика: [метрика], сейчас [значение], ожидаем [значение] за [срок].
+Экономика: [что даёт единица метрики в деньгах], затраты на изменение: [сумма].
+
+Сделай:
+1. Расчёт эффекта в трёх сценариях: пессимистичный / базовый / оптимистичный,
+   с явными допущениями по каждому.
+2. Анализ чувствительности: какое одно допущение сильнее всего меняет итог.
+3. Срок окупаемости.
+4. Список допущений, которые надо проверить в первую очередь, — по убыванию влияния.
+
+Не подгоняй результат под положительный: если при базовых допущениях эффекта нет — так и скажи.</pre>
+  <div class="check"><b>Что проверить:</b> считается ли эффект на данных, которые вы реально
+    собираете или начнёте собирать. Модель на недоступных данных — это не модель, а намерение.</div>
+</div>
+
+<div class="prompt">
+  <div class="head"><span class="stage">Этап 10</span><span class="title">Сборка презентации проекта</span>
+    <span class="when">Шаг 4, итоговое задание</span><button class="copy">копировать</button></div>
+  <pre>Собери каркас презентации аналитического проекта на 5–7 слайдов по структуре:
+проблема → метрика → данные → инструмент → анализ → вывод → эффект.
+
+Вот мои материалы:
+— проблема и объект изменений: [текст];
+— дерево метрик: [ключевые метрики];
+— источники данных: [что есть, чего не хватает];
+— результаты анализа: [что получилось];
+— расчёт эффекта: [цифры и допущения].
+
+Для каждого слайда: заголовок-утверждение (не тема, а вывод), 3–4 тезиса,
+какая одна визуализация нужна. Отдельно выпиши вопросы, которые мне задаст
+скептик из финансового блока, и как на них отвечать.</pre>
+  <div class="check"><b>Что проверить:</b> заголовки должны читаться как связный рассказ,
+    если пролистать только их. Если не читается — порядок слайдов неверный.</div>
+</div>
+
+<h2><span class="num">4</span>Шесть правил, чтобы не обмануться с ИИ</h2>
+<ol class="rules">
+  <li><b>Просите источник и метод.</b> Любую цифру, которую ИИ назвал сам, считайте гипотезой, пока не увидели её в своих данных.</li>
+  <li><b>Проверяйте на нескольких строках руками.</b> Одна проверенная строка ловит большинство ошибок агрегации.</li>
+  <li><b>Задавайте контекст, а не только вопрос.</b> Роль, данные, имена столбцов, период, формат ответа — точность промпта равна точности ответа.</li>
+  <li><b>Не путайте уровни.</b> Факт — измерено; интерпретация — объяснение; гипотеза — предположение. В доклад идут факты, остальное — с оговоркой.</li>
+  <li><b>Спрашивайте про альтернативные объяснения.</b> «Какие ещё причины могли дать такой результат?» — самый дешёвый способ не ошибиться.</li>
+  <li><b>Итерируйте.</b> Первый ответ — черновик. Уточнение промпта даёт больший прирост качества, чем смена модели.</li>
+</ol>
+
+<div class="note">
+  <b>Если что-то не сходится.</b> Промпт не дал результата — почти всегда не хватает контекста:
+  добавьте имена столбцов, период, единицы измерения и формат ответа. Если не помогло —
+  задача сформулирована шире, чем на один промпт: разбейте её на этапы из этого OnePager.
+</div>
+
+<footer>
+  Аналитика 360 · Шаги 1–4 · Карпов Курсы. Материалы участников:
+  <a href="https://github.com/wybaeb/sber-a360-materials">github.com/wybaeb/sber-a360-materials</a>.
+  Учебные данные синтетические. Промпты инструментонезависимы: GigaChat — основной инструмент программы.
+</footer>
+
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = btn.closest('.prompt').querySelector('pre');
+    var done = function () { btn.textContent = 'скопировано'; setTimeout(function () { btn.textContent = 'копировать'; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pre.innerText).then(done, function () { fallback(pre); done(); });
+    } else { fallback(pre); done(); }
+  });
+});
+function fallback(pre) {
+  var r = document.createRange(); r.selectNodeContents(pre);
+  var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  try { document.execCommand('copy'); } catch (e) {}
+}
+</script>
+</body>
+</html>
