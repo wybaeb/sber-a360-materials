@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Аналитика 360 · Инструменты и модели курса</title>
+<style>
+  :root{
+    --green:#20BA72; --green-dark:#138A3E; --green-soft:#EAF9F1; --green-line:#C9E7D8;
+    --lime:#D9FFA7; --text:#2E3641; --muted:#6B7580; --bg:#FFFFFF; --surface:#F5FAF8;
+    --code-bg:#F2F7F5; --amber:#E0A21A; --amber-soft:#FFF8E7;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SB Sans Text","Segoe UI",Arial,sans-serif;
+       color:var(--text);background:var(--bg);line-height:1.5;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 60px}
+  header{background:linear-gradient(115deg,#1B7FD6 0%,#20BA72 55%,#7CD618 100%);color:#fff;padding:34px 0 30px;margin-bottom:26px}
+  header .wrap{padding-bottom:0}
+  .kicker{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+  h1{font-size:30px;font-weight:300;margin:8px 0 10px;line-height:1.15}
+  header p{margin:0;max-width:680px;font-size:15px;opacity:.92}
+  .stamp{display:inline-block;margin-top:14px;font-size:12.5px;font-weight:700;
+         background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+         border-radius:20px;padding:4px 13px}
+  h2{font-size:20px;margin:34px 0 6px;font-weight:700}
+  h2 .num{color:var(--green);font-weight:800;margin-right:8px}
+  .lead{color:var(--muted);margin:0 0 14px}
+  h3{font-size:15px;margin:18px 0 6px}
+  a{color:var(--green-dark)}
+  .card{border:1px solid var(--green-line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:14px 0}
+  .cols .card h4{margin:0 0 6px;font-size:14.5px}
+  .cols .card p{margin:0;font-size:13.5px;color:var(--muted)}
+  .cols .card p + p{margin-top:7px}
+  .warn{border-left:4px solid var(--amber);background:var(--amber-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px}
+  .note{border-left:4px solid var(--green);background:var(--green-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px}
+  code{background:var(--code-bg);border-radius:3px;padding:1px 5px;font-size:12.5px;word-break:break-word}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--green-line);color:var(--muted);font-size:13px}
+
+  /* --- фильтры --- */
+  .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--surface);
+           border:1px solid var(--green-line);border-radius:10px;padding:12px 14px;margin:14px 0}
+  .filters label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:3px}
+  .fld{flex:1 1 auto;min-width:150px}
+  .fld.grow{flex:2 1 220px}
+  .filters select,.filters input{width:100%;font-family:inherit;font-size:13.5px;color:var(--text);
+        background:#fff;border:1px solid var(--green-line);border-radius:7px;padding:7px 9px}
+  .filters select:focus,.filters input:focus{outline:2px solid var(--green);outline-offset:-1px}
+  .reset{align-self:flex-end;font-size:12.5px;font-weight:700;color:var(--green-dark);background:#fff;
+         border:1px solid var(--green-line);border-radius:7px;padding:8px 13px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .reset:active{background:var(--green-soft)}
+  .found{font-size:13px;color:var(--muted);margin:0 0 10px}
+  .found b{color:var(--text)}
+
+  /* --- таблица --- */
+  .tbox{overflow:auto;max-height:76vh;border:1px solid var(--green-line);border-radius:10px;max-width:100%;
+        overscroll-behavior:contain}
+  table.tools{border-collapse:separate;border-spacing:0;width:100%;min-width:1010px;font-size:12.5px;margin:0}
+  table.tools th,table.tools td{border-bottom:1px solid var(--green-line);padding:8px 9px;text-align:left;vertical-align:top}
+  table.tools th{background:var(--green-soft);font-weight:700;position:sticky;top:0;z-index:2;
+                 border-bottom:1px solid var(--green-line);font-size:12.5px;line-height:1.35}
+  table.tools tr:last-child td{border-bottom:none}
+  table.tools td.tech{white-space:nowrap}
+  table.tools td.nowrap{min-width:150px}
+  table.tools td.mid{text-align:center;white-space:nowrap}
+  table.tools td.lnk{word-break:break-word;min-width:120px}
+  table.tools tr.row:hover td{background:#FAFDFC}
+  tr.grp td{background:#fff;border-bottom:1px solid var(--green-line);border-top:2px solid var(--green);
+            font-weight:700;font-size:13.5px;padding-top:12px}
+  .mnum{display:inline-block;background:var(--green);color:#fff;border-radius:4px;font-size:11px;
+        font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;margin-right:9px;vertical-align:2px}
+  .cnt{display:inline-block;margin-left:9px;color:var(--muted);font-weight:600;font-size:12px}
+  .flag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:4px;padding:2px 8px;white-space:nowrap}
+  .flag.yes{background:var(--green-soft);color:var(--green-dark)}
+  .flag.no{background:var(--amber-soft);color:#8A6410}
+  .empty{padding:22px;text-align:center;color:var(--muted);font-size:14px;display:none}
+
+  .dbox{overflow-x:auto;max-width:100%;margin:10px 0}
+  table.diff{border-collapse:collapse;width:100%;min-width:720px;font-size:13px;margin:0}
+  table.diff th,table.diff td{border:1px solid var(--green-line);padding:7px 9px;text-align:left;vertical-align:top}
+  table.diff th{background:var(--green-soft);font-weight:700}
+  table.diff td.was{color:#8A6410;text-decoration:line-through;word-break:break-word}
+  table.diff td.now{color:var(--green-dark);font-weight:700;word-break:break-word}
+
+  @media (max-width:640px){h1{font-size:24px}.filters{padding:10px}.reset{width:100%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="kicker">Аналитика 360 · Дополнительные материалы · Карпов Курсы</div>
+    <h1>Инструменты и модели курса</h1>
+    <p>Сводная таблица сервисов, моделей и платформ, которые упоминаются в материалах курса:
+       где именно упомянут инструмент, зачем он там показан и куда идти за ним самому.</p>
+    <div class="stamp">Данные на 07.08.2026 · страница обновлена 21.08.2026</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<h2><span class="num">1</span>Как пользоваться таблицей</h2>
+<p class="lead">Таблица — справочник, а не список для изучения подряд. Открывайте её, когда в уроке
+   прозвучал незнакомый сервис и нужно понять, что это и где его взять.</p>
+
+<div class="cols">
+  <div class="card">
+    <h4>Где упоминается · Контекст</h4>
+    <p>Точное место в курсе — модуль, урок и тайм-код видео либо страница pdf — и цель, ради которой
+       инструмент показан. По этим двум колонкам вы возвращаетесь к нужной минуте урока, а не
+       пересматриваете его целиком.</p>
+  </div>
+  <div class="card">
+    <h4>Дана ли ссылка явно в материалах</h4>
+    <p>«Да» — адрес назван прямо в уроке или в pdf. «Нет» — инструмент показан на экране,
+       но ссылки в материалах не было: мы собрали её здесь, чтобы вам не приходилось искать
+       сервис по кадру видео.</p>
+  </div>
+  <div class="card">
+    <h4>Страна решения · Доступно без VPN</h4>
+    <p>«Доступно без VPN: нет» означает ограничение доступа из России, а не то, что сервиса нет
+       или он закрылся. Такие инструменты в курсе показаны как иллюстрация подхода —
+       у каждого из них в программе есть российский аналог.</p>
+  </div>
+</div>
+
+<div class="warn">
+  <b>Список живой.</b> Снимок сделан 07.08.2026. Сервисы и модели обновляются, меняют названия,
+  переезжают на другие домены и версии — именно поэтому таблица и появилась.
+  Если ссылка не открылась, это почти всегда переезд, а не сломанный материал:
+  найдите сервис по названию из первой колонки. Если инструмент недоступен из корпоративной сети —
+  работайте с российским аналогом, в курсе это <b>GigaChat</b> или <b>YandexGPT</b>,
+  логика работы с промптом от инструмента не зависит.
+</div>
+
+<h2><span class="num">2</span>Таблица инструментов</h2>
+<p class="lead">Все инструменты, упомянутые в курсе, сгруппированы по модулям.
+   Фильтры и поиск работают одновременно.</p>
+
+<div class="filters">
+  <div class="fld"><label for="fModule">Модуль</label>
+  <select id="fModule">
+    <option value="">все модули</option>
+    <option value="0">Модуль 0 — Основы и применение ИИ (вводный модуль)</option>
+    <option value="1">Модуль 1 — Как LLM обрабатывают запросы и формируют ответы</option>
+    <option value="2">Модуль 2 — Практическое применение ИИ: работа с текстом</option>
+    <option value="3">Модуль 3 — Практическое применение ИИ: работа с данными</option>
+    <option value="5">Модуль 5 — Практическое применение ИИ: работа с документами и файлами (RAG)</option>
+    <option value="6">Модуль 6 — ИИ-агенты и автоматизация процессов</option>
+  </select></div>
+  <div class="fld grow"><label for="fType">Тип технологии</label>
+  <select id="fType">
+    <option value="">все типы</option>
+    <option value="Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG">Low-code платформа визуального…</option>
+    <option value="Low-code платформа для автоматизации рабочих процессов">Low-code платформа для автоматизации…</option>
+    <option value="Бесплатный редактор для Markdown">Бесплатный редактор для Markdown</option>
+    <option value="ИИ-модель">ИИ-модель</option>
+    <option value="ИИ-модель (SGR-агент) с весами на локальном сервере">ИИ-модель</option>
+    <option value="ИИ-модель (Режим артефактов, Artifacts)">ИИ-модель</option>
+    <option value="ИИ-модель с весами на локальном сервере">ИИ-модель с весами на локальном сервере</option>
+    <option value="Облачный текстовый редактор">Облачный текстовый редактор</option>
+    <option value="Онлайн-сервис на базе ИИ для создания презентаций, веб-страниц, графиков и др.">Онлайн-сервис на базе ИИ для создания…</option>
+    <option value="Платформа для работы с данными в сфере AI">Платформа для работы с данными в сфере AI</option>
+    <option value="Платформа корпоративных ИИ-решений">Платформа корпоративных ИИ-решений</option>
+    <option value="Сервис (а также язык разметки), переводит текстовое описание графиков в их графическое представление">Сервис</option>
+    <option value="Токенайзер">Токенайзер</option>
+  </select></div>
+  <div class="fld"><label for="fVpn">Доступно без VPN</label>
+  <select id="fVpn">
+    <option value="">неважно</option>
+    <option value="да">да</option>
+    <option value="нет">нет</option>
+  </select></div>
+  <div class="fld grow"><label for="fText">Поиск по названию и контексту</label>
+  <input id="fText" type="search" placeholder="например: agent, RAG, Qwen" autocomplete="off"></div>
+  <button class="reset" id="fReset" type="button">сбросить</button>
+</div>
+
+<p class="found" id="found"></p>
+
+<div class="tbox">
+<table class="tools">
+  <thead>
+  <tr>
+    <th style="width:12%">Технология</th>
+    <th style="width:16%">Тип технологии</th>
+    <th style="width:16%">Где упоминается</th>
+    <th style="width:17%">Контекст<br>(цель упоминания)</th>
+    <th style="width:14%">Ссылка</th>
+    <th style="width:9%">Ссылка&nbsp;дана<br>в&nbsp;материалах</th>
+    <th style="width:8%">Страна<br>решения</th>
+    <th style="width:8%">Доступно<br>без VPN</th>
+  </tr>
+  </thead>
+  <tbody id="tbody">
+<tr class="grp" data-module="0"><td colspan="8"><span class="mnum">Модуль 0</span>Основы и применение ИИ (вводный модуль)<span class="cnt">8</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="да" data-search="yandexgpt ии-модель материалы для самостоятельного изучения (pdf, стр. 2) информационная справка россия yandex.ru/chat"><td class="tech"><b>YandexGPT</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 2)</td><td>Информационная справка</td><td class="lnk"><a href="https://yandex.ru/chat/" target="_blank" rel="noopener">yandex.ru/chat</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">Россия</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="да" data-search="gigachat ии-модель материалы для самостоятельного изучения (pdf, стр. 2) информационная справка россия giga.chat"><td class="tech"><b>GigaChat</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 2)</td><td>Информационная справка</td><td class="lnk"><a href="https://giga.chat" target="_blank" rel="noopener">giga.chat</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">Россия</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="да" data-search="qwen ии-модель материалы для самостоятельного изучения (pdf, стр. 3) информационная справка китай chat.qwen.ai"><td class="tech"><b>Qwen</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 3)</td><td>Информационная справка</td><td class="lnk"><a href="https://chat.qwen.ai" target="_blank" rel="noopener">chat.qwen.ai</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="да" data-search="deepseek ии-модель материалы для самостоятельного изучения (pdf, стр. 3) информационная справка китай chat.deepseek.com"><td class="tech"><b>Deepseek</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 3)</td><td>Информационная справка</td><td class="lnk"><a href="https://chat.deepseek.com" target="_blank" rel="noopener">chat.deepseek.com</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="нет" data-search="chatgpt ии-модель материалы для самостоятельного изучения (pdf, стр. 4) информационная справка сша chat.openai.com"><td class="tech"><b>ChatGPT</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 4)</td><td>Информационная справка</td><td class="lnk"><a href="https://chat.openai.com" target="_blank" rel="noopener">chat.openai.com</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="нет" data-search="gemini ии-модель материалы для самостоятельного изучения (pdf, стр. 4) информационная справка сша gemini.google.com"><td class="tech"><b>Gemini</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 4)</td><td>Информационная справка</td><td class="lnk"><a href="https://gemini.google.com" target="_blank" rel="noopener">gemini.google.com</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="нет" data-search="claude ии-модель материалы для самостоятельного изучения (pdf, стр. 5) информационная справка сша claude.ai"><td class="tech"><b>Claude</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 5)</td><td>Информационная справка</td><td class="lnk"><a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="row" data-module="0" data-type="ИИ-модель" data-vpn="да" data-search="perplexity ии-модель материалы для самостоятельного изучения (pdf, стр. 5) информационная справка сша www.perplexity.ai"><td class="tech"><b>Perplexity</b></td><td>ИИ-модель</td><td class="nowrap">Материалы для самостоятельного изучения (pdf, стр. 5)</td><td>Информационная справка</td><td class="lnk"><a href="https://www.perplexity.ai" target="_blank" rel="noopener">www.perplexity.ai</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">США</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="grp" data-module="1"><td colspan="8"><span class="mnum">Модуль 1</span>Как LLM обрабатывают запросы и формируют ответы<span class="cnt">2</span></td></tr>
+<tr class="row" data-module="1" data-type="Токенайзер" data-vpn="нет" data-search="openai api tokenizer токенайзер 1.1. как llm читают, понимают и отвечают (видео, с 09:18) пример токенизации (наглядное оформление) сша platform.openai.com/tokenizer"><td class="tech"><b>OpenAI API Tokenizer</b></td><td>Токенайзер</td><td class="nowrap">1.1. Как LLM читают, понимают и отвечают (видео, с 09:18)</td><td>Пример токенизации (наглядное оформление)</td><td class="lnk"><a href="https://platform.openai.com/tokenizer" target="_blank" rel="noopener">platform.openai.com/tokenizer</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="row" data-module="1" data-type="ИИ-модель" data-vpn="да" data-search="deepseek ии-модель 1.2. этика и ответственность при использовании llm (видео, с 17:47) кейсы промпт-инжиниринга китай chat.deepseek.com"><td class="tech"><b>Deepseek</b></td><td>ИИ-модель</td><td class="nowrap">1.2. Этика и ответственность при использовании LLM (видео, с 17:47)</td><td>Кейсы промпт-инжиниринга</td><td class="lnk"><a href="https://chat.deepseek.com" target="_blank" rel="noopener">chat.deepseek.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="grp" data-module="2"><td colspan="8"><span class="mnum">Модуль 2</span>Практическое применение ИИ: работа с текстом<span class="cnt">5</span></td></tr>
+<tr class="row" data-module="2" data-type="ИИ-модель" data-vpn="да" data-search="deepseek ии-модель 2.2. управление структурой вывода (видео, с 00:06; 21:00) кейсы промпт-инжиниринга, пример «рассуждений» китай chat.deepseek.com"><td class="tech"><b>Deepseek</b></td><td>ИИ-модель</td><td class="nowrap">2.2. Управление структурой вывода (видео, с 00:06; 21:00)</td><td>Кейсы промпт-инжиниринга, пример «рассуждений»</td><td class="lnk"><a href="https://chat.deepseek.com" target="_blank" rel="noopener">chat.deepseek.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="2" data-type="ИИ-модель" data-vpn="нет" data-search="openai ии-модель 2.2. управление структурой вывода (видео, с 16:51) режим рецензирования (track changes) сша chatgpt.com"><td class="tech"><b>OpenAI</b></td><td>ИИ-модель</td><td class="nowrap">2.2. Управление структурой вывода (видео, с 16:51)</td><td>Режим рецензирования (track changes)</td><td class="lnk"><a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="row" data-module="2" data-type="Бесплатный редактор для Markdown" data-vpn="да" data-search="marktext бесплатный редактор для markdown 2.2. управление структурой вывода (видео, с 32:25) пример работы с языком разметки markdown китай github.com/marktext/marktext"><td class="tech"><b>MarkText</b></td><td>Бесплатный редактор для Markdown</td><td class="nowrap">2.2. Управление структурой вывода (видео, с 32:25)</td><td>Пример работы с языком разметки Markdown</td><td class="lnk"><a href="https://github.com/marktext/marktext" target="_blank" rel="noopener">github.com/marktext/marktext</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="2" data-type="Облачный текстовый редактор" data-vpn="да" data-search="google документы облачный текстовый редактор 2.2. управление структурой вывода (видео, с 32:25) пример работы с языком разметки markdown сша docs.google.com"><td class="tech"><b>Google документы</b></td><td>Облачный текстовый редактор</td><td class="nowrap">2.2. Управление структурой вывода (видео, с 32:25)</td><td>Пример работы с языком разметки Markdown</td><td class="lnk"><a href="https://docs.google.com" target="_blank" rel="noopener">docs.google.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="2" data-type="Онлайн-сервис на базе ИИ для создания презентаций, веб-страниц, графиков и др." data-vpn="да" data-search="gamma app онлайн-сервис на базе ии для создания презентаций, веб-страниц, графиков и др. 2.2. управление структурой вывода (видео, с 40:13) пример генерации презентации при помощи ии сша gamma.app"><td class="tech"><b>Gamma app</b></td><td>Онлайн-сервис на базе ИИ для создания презентаций, веб-страниц, графиков и др.</td><td class="nowrap">2.2. Управление структурой вывода (видео, с 40:13)</td><td>Пример генерации презентации при помощи ИИ</td><td class="lnk"><a href="https://gamma.app" target="_blank" rel="noopener">gamma.app</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="grp" data-module="3"><td colspan="8"><span class="mnum">Модуль 3</span>Практическое применение ИИ: работа с данными<span class="cnt">4</span></td></tr>
+<tr class="row" data-module="3" data-type="ИИ-модель" data-vpn="да" data-search="deepseek ии-модель 3.1. работа с данными и числовыми выводами (видео, с 01:46) кейсы промпт-инжиниринга, построение графиков китай chat.deepseek.com"><td class="tech"><b>Deepseek</b></td><td>ИИ-модель</td><td class="nowrap">3.1. Работа с данными и числовыми выводами (видео, с 01:46)</td><td>Кейсы промпт-инжиниринга, построение графиков</td><td class="lnk"><a href="https://chat.deepseek.com" target="_blank" rel="noopener">chat.deepseek.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="3" data-type="Сервис (а также язык разметки), переводит текстовое описание графиков в их графическое представление" data-vpn="да" data-search="mermaid сервис (а также язык разметки), переводит текстовое описание графиков в их графическое представление 3.1. работа с данными и числовыми выводами (видео, с 10:05) построение дашбордов и графиков сша, швеция mermaid.live"><td class="tech"><b>Mermaid</b></td><td>Сервис (а также язык разметки), переводит текстовое описание графиков в их графическое представление</td><td class="nowrap">3.1. Работа с данными и числовыми выводами (видео, с 10:05)</td><td>Построение дашбордов и графиков</td><td class="lnk"><a href="https://mermaid.live" target="_blank" rel="noopener">mermaid.live</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">США, Швеция</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="3" data-type="ИИ-модель (Режим артефактов, Artifacts)" data-vpn="да" data-search="qwen ии-модель (режим артефактов, artifacts) 3.2. проверка и контроль качества выводов (видео, с 04:20) пример статистики по данным в режиме артефактов китай chat.qwen.ai"><td class="tech"><b>Qwen</b></td><td>ИИ-модель (Режим артефактов, Artifacts)</td><td class="nowrap">3.2. Проверка и контроль качества выводов (видео, с 04:20)</td><td>Пример статистики по данным в режиме артефактов</td><td class="lnk"><a href="https://chat.qwen.ai" target="_blank" rel="noopener">chat.qwen.ai</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="3" data-type="ИИ-модель (Режим артефактов, Artifacts)" data-vpn="да" data-search="deepseek ии-модель (режим артефактов, artifacts) 3.2. проверка и контроль качества выводов (видео, с 12:17) кейсы промпт-инжиниринга китай chat.deepseek.com"><td class="tech"><b>Deepseek</b></td><td>ИИ-модель (Режим артефактов, Artifacts)</td><td class="nowrap">3.2. Проверка и контроль качества выводов (видео, с 12:17)</td><td>Кейсы промпт-инжиниринга</td><td class="lnk"><a href="https://chat.deepseek.com" target="_blank" rel="noopener">chat.deepseek.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="grp" data-module="5"><td colspan="8"><span class="mnum">Модуль 5</span>Практическое применение ИИ: работа с документами и файлами (RAG)<span class="cnt">3</span></td></tr>
+<tr class="row" data-module="5" data-type="Платформа для работы с данными в сфере AI" data-vpn="да" data-search="encord платформа для работы с данными в сфере ai 5.1. работа с документами – rag (retrieval augmented generation), часть 1 (видео, с 14:54) иллюстрация векторного представления слов сша, великобритания encord.com"><td class="tech"><b>Encord</b></td><td>Платформа для работы с данными в сфере AI</td><td class="nowrap">5.1. Работа с документами – RAG (Retrieval Augmented Generation), часть 1 (видео, с 14:54)</td><td>Иллюстрация векторного представления слов</td><td class="lnk"><a href="https://encord.com" target="_blank" rel="noopener">encord.com</a></td><td class="mid"><span class="flag yes">да</span></td><td class="mid">США, Великобритания</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="5" data-type="Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG" data-vpn="нет" data-search="flowise cloud low-code платформа визуального проектирования мультиагентных систем/чат-ботов/llm на основе rag 5.2. работа с документами – rag (retrieval augmented generation), часть 2 (видео, с 00:15) пример простого визуального конструктора на основе rag сша cloud.flowiseai.com"><td class="tech"><b>Flowise Cloud</b></td><td>Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG</td><td class="nowrap">5.2. Работа с документами – RAG (Retrieval Augmented Generation), часть 2 (видео, с 00:15)</td><td>Пример простого визуального конструктора на основе RAG</td><td class="lnk"><a href="https://cloud.flowiseai.com" target="_blank" rel="noopener">cloud.flowiseai.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="row" data-module="5" data-type="Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG" data-vpn="нет" data-search="langflow low-code платформа визуального проектирования мультиагентных систем/чат-ботов/llm на основе rag 5.2. работа с документами – rag (retrieval augmented generation), часть 2 (видео, с 02:34) пример простого визуального конструктора на основе rag сша www.langflow.org"><td class="tech"><b>Langflow</b></td><td>Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG</td><td class="nowrap">5.2. Работа с документами – RAG (Retrieval Augmented Generation), часть 2 (видео, с 02:34)</td><td>Пример простого визуального конструктора на основе RAG</td><td class="lnk"><a href="https://www.langflow.org" target="_blank" rel="noopener">www.langflow.org</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="grp" data-module="6"><td colspan="8"><span class="mnum">Модуль 6</span>ИИ-агенты и автоматизация процессов<span class="cnt">6</span></td></tr>
+<tr class="row" data-module="6" data-type="ИИ-модель с весами на локальном сервере" data-vpn="да" data-search="llama 3.2 ии-модель с весами на локальном сервере 6.1. ии-агенты и автоматизация процессов, часть 1 (видео, с 03:16) демонстрация работы простого ассистента сша ollama.com/library/llama3.2"><td class="tech"><b>Llama 3.2</b></td><td>ИИ-модель с весами на локальном сервере</td><td class="nowrap">6.1. ИИ-агенты и автоматизация процессов, часть 1 (видео, с 03:16)</td><td>Демонстрация работы простого ассистента</td><td class="lnk"><a href="https://ollama.com/library/llama3.2" target="_blank" rel="noopener">ollama.com/library/llama3.2</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="6" data-type="ИИ-модель (SGR-агент) с весами на локальном сервере" data-vpn="да" data-search="qwen 3 ии-модель (sgr-агент) с весами на локальном сервере 6.2. ии-агенты и автоматизация процессов, часть 2 (видео, с 02:13) демонстрация работы простого агента китай chat.qwen.ai"><td class="tech"><b>Qwen 3</b></td><td>ИИ-модель (SGR-агент) с весами на локальном сервере</td><td class="nowrap">6.2. ИИ-агенты и автоматизация процессов, часть 2 (видео, с 02:13)</td><td>Демонстрация работы простого агента</td><td class="lnk"><a href="https://chat.qwen.ai" target="_blank" rel="noopener">chat.qwen.ai</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Китай</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="6" data-type="Платформа корпоративных ИИ-решений" data-vpn="да" data-search="panteo chain платформа корпоративных ии-решений 6.2. ии-агенты и автоматизация процессов, часть 2 (видео, с 16:20) пример системы создания мультиагентных систем россия panteo.ai"><td class="tech"><b>Panteo Chain</b></td><td>Платформа корпоративных ИИ-решений</td><td class="nowrap">6.2. ИИ-агенты и автоматизация процессов, часть 2 (видео, с 16:20)</td><td>Пример системы создания мультиагентных систем</td><td class="lnk"><a href="https://panteo.ai" target="_blank" rel="noopener">panteo.ai</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Россия</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="6" data-type="Low-code платформа для автоматизации рабочих процессов" data-vpn="да" data-search="n8n low-code платформа для автоматизации рабочих процессов 6.2. ии-агенты и автоматизация процессов, часть 2 (видео, с 16:20) пример системы создания мультиагентных систем германия n8n.io"><td class="tech"><b>n8n</b></td><td>Low-code платформа для автоматизации рабочих процессов</td><td class="nowrap">6.2. ИИ-агенты и автоматизация процессов, часть 2 (видео, с 16:20)</td><td>Пример системы создания мультиагентных систем</td><td class="lnk"><a href="https://n8n.io" target="_blank" rel="noopener">n8n.io</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">Германия</td><td class="mid"><span class="flag yes">да</span></td></tr>
+<tr class="row" data-module="6" data-type="Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG" data-vpn="нет" data-search="flowise cloud low-code платформа визуального проектирования мультиагентных систем/чат-ботов/llm на основе rag 6.2. ии-агенты и автоматизация процессов, часть 2 (видео, с 16:20) пример системы создания мультиагентных систем сша cloud.flowiseai.com"><td class="tech"><b>Flowise Cloud</b></td><td>Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG</td><td class="nowrap">6.2. ИИ-агенты и автоматизация процессов, часть 2 (видео, с 16:20)</td><td>Пример системы создания мультиагентных систем</td><td class="lnk"><a href="https://cloud.flowiseai.com" target="_blank" rel="noopener">cloud.flowiseai.com</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+<tr class="row" data-module="6" data-type="Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG" data-vpn="нет" data-search="langflow low-code платформа визуального проектирования мультиагентных систем/чат-ботов/llm на основе rag 6.2. ии-агенты и автоматизация процессов, часть 2 (видео, с 16:20) пример системы создания мультиагентных систем сша www.langflow.org"><td class="tech"><b>Langflow</b></td><td>Low-code платформа визуального проектирования мультиагентных систем/чат-ботов/LLM на основе RAG</td><td class="nowrap">6.2. ИИ-агенты и автоматизация процессов, часть 2 (видео, с 16:20)</td><td>Пример системы создания мультиагентных систем</td><td class="lnk"><a href="https://www.langflow.org" target="_blank" rel="noopener">www.langflow.org</a></td><td class="mid"><span class="flag no">нет</span></td><td class="mid">США</td><td class="mid"><span class="flag no">нет</span></td></tr>
+  </tbody>
+</table>
+<div class="empty" id="empty">По заданным условиям ничего не найдено — снимите часть фильтров.</div>
+</div>
+
+<h2><span class="num">3</span>Что поправили относительно исходной таблицы</h2>
+<p class="lead">Содержание ячеек мы не редактировали: колонки «Где упоминается», «Контекст»
+   и «Дана ли ссылка явно в материалах» перенесены дословно. Исправлены только опечатки,
+   из-за которых ссылка вела не туда, — каждая правка ниже.</p>
+
+<div class="dbox">
+<table class="diff">
+  <tr><th style="width:16%">Строка</th><th style="width:12%">Поле</th><th style="width:20%">Было</th>
+      <th style="width:19%">Стало</th><th>Почему</th></tr>
+  <tr><td><b>Mermaid</b></td><td>Ссылка</td><td class="was">https://marmaid.live</td><td class="now">https://mermaid.live</td><td>опечатка в домене. Домен <code>marmaid.live</code> занят и отвечает: это не Mermaid, а посторонняя страница с редиректом — в учебные материалы её включать нельзя</td></tr>
+  <tr><td><b>MarkText</b></td><td>Ссылка</td><td class="was">https://github.com/marktext/merktext</td><td class="now">https://github.com/marktext/marktext</td><td>опечатка в имени репозитория, исходная ссылка отдаёт 404</td></tr>
+  <tr><td><b>GigaChat</b></td><td>Страна решения</td><td class="was">Росиия</td><td class="now">Россия</td><td>опечатка</td></tr>
+  <tr><td><b>GigaChat</b></td><td>Ссылка</td><td class="was">https://gigachat.sber.ru</td><td class="now">https://giga.chat</td><td>домен <code>gigachat.sber.ru</code> не существует (NXDOMAIN — не отвечает DNS, это не блокировка и не VPN). Действующий адрес веб-версии — <code>giga.chat</code>. <b>Просим подтвердить:</b> если в Сбере принят другой внутренний адрес, вернём его</td></tr>
+  <tr><td><b>Flowise Cloud, Langflow (4 строки)</b></td><td>Тип технологии</td><td class="was">визуального проектировани</td><td class="now">визуального проектирования</td><td>опечатка, пропущено окончание</td></tr>
+</table>
+</div>
+
+<div class="note">
+  <b>Проверка ссылок 21.08.2026.</b> Все адреса из таблицы открывались автоматической проверкой.
+  Часть сервисов (Claude, Perplexity, Gamma, ChatGPT, платформа OpenAI) отвечает проверочной
+  страницей Cloudflare — это защита от автоматических обращений, сами сервисы работают;
+  из браузера они открываются штатно, с учётом колонки «Доступно без VPN».
+  Прочих неработающих адресов, кроме перечисленных выше, не обнаружено.
+</div>
+
+<h2><span class="num">4</span>Куда дальше</h2>
+<p class="lead">Раздел входит в комплект материалов курса.</p>
+<div class="cols">
+  <div class="card">
+    <h4><a href="../onepager/">Учебный OnePager практических занятий</a></h4>
+    <p>Маршрут курса, материалы по шагам и образцы промптов по этапам обработки данных —
+       с кнопкой «копировать» у каждого промпта.</p>
+  </div>
+  <div class="card">
+    <h4><a href="https://github.com/wybaeb/sber-a360-materials">Репозиторий материалов участников</a></h4>
+    <p>Шаблоны, учебные датасеты и ноутбуки практических занятий.
+       Все учебные данные синтетические.</p>
+  </div>
+</div>
+
+<p class="lead">Вопросы по таблице и по доступу к инструментам — куратору курса.</p>
+
+<footer>
+  Аналитика 360 · дополнительные материалы · Карпов Курсы.
+  Данные таблицы на 07.08.2026, страница обновлена 21.08.2026.
+  Источник: <a href="https://github.com/wybaeb/sber-a360-materials">github.com/wybaeb/sber-a360-materials</a>.
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var tbody = document.getElementById('tbody');
+  var rows = [].slice.call(tbody.querySelectorAll('tr.row'));
+  var groups = [].slice.call(tbody.querySelectorAll('tr.grp'));
+  var fModule = document.getElementById('fModule'), fType = document.getElementById('fType'),
+      fVpn = document.getElementById('fVpn'), fText = document.getElementById('fText'),
+      found = document.getElementById('found'), empty = document.getElementById('empty');
+
+  function apply() {
+    var m = fModule.value, t = fType.value, v = fVpn.value,
+        q = fText.value.trim().toLowerCase();
+    var shown = 0, perGroup = {};
+    rows.forEach(function (r) {
+      var ok = (!m || r.dataset.module === m) &&
+               (!t || r.dataset.type === t) &&
+               (!v || r.dataset.vpn === v) &&
+               (!q || r.dataset.search.indexOf(q) !== -1);
+      r.style.display = ok ? '' : 'none';
+      if (ok) { shown++; perGroup[r.dataset.module] = true; }
+    });
+    // Заголовок модуля показываем, только если под ним осталась хотя бы одна строка.
+    groups.forEach(function (g) { g.style.display = perGroup[g.dataset.module] ? '' : 'none'; });
+    empty.style.display = shown ? 'none' : 'block';
+    found.innerHTML = shown === rows.length
+      ? 'Показаны все <b>' + rows.length + '</b> записи таблицы.'
+      : 'Показано <b>' + shown + '</b> из ' + rows.length + '.';
+  }
+
+  [fModule, fType, fVpn].forEach(function (el) { el.addEventListener('change', apply); });
+  fText.addEventListener('input', apply);
+  document.getElementById('fReset').addEventListener('click', function () {
+    fModule.value = ''; fType.value = ''; fVpn.value = ''; fText.value = ''; apply();
+  });
+  apply();
+})();
+</script>
+</body>
+</html>

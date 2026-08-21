@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Аналитика 360 · Материалы участников</title>
+<style>
+  :root{--green:#20BA72;--green-dark:#138A3E;--green-soft:#EAF9F1;--green-line:#C9E7D8;
+        --text:#2E3641;--muted:#6B7580;--bg:#FFFFFF;--surface:#F5FAF8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SB Sans Text","Segoe UI",Arial,sans-serif;
+       color:var(--text);background:var(--bg);line-height:1.5;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 60px}
+  header{background:linear-gradient(115deg,#1B7FD6 0%,#20BA72 55%,#7CD618 100%);color:#fff;padding:34px 0 30px;margin-bottom:26px}
+  header .wrap{padding-bottom:0}
+  .kicker{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+  h1{font-size:30px;font-weight:300;margin:8px 0 10px;line-height:1.15}
+  header p{margin:0;max-width:640px;font-size:15px;opacity:.92}
+  a{color:var(--green-dark)}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:18px 0}
+  .card{border:1px solid var(--green-line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+  .card h4{margin:0 0 6px;font-size:15px}
+  .card p{margin:0;font-size:13.5px;color:var(--muted)}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--green-line);color:var(--muted);font-size:13px}
+  @media (max-width:640px){h1{font-size:24px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="kicker">Аналитика 360 · Карпов Курсы</div>
+    <h1>Материалы участников</h1>
+    <p>Две страницы, которые открывают во время занятий и после них.</p>
+  </div>
+</header>
+<div class="wrap">
+  <div class="cols">
+    <div class="card">
+      <h4><a href="onepager/">Учебный OnePager практических занятий</a></h4>
+      <p>Маршрут курса, материалы и датасеты по шагам и образцы промптов по этапам
+         обработки данных — с кнопкой «копировать» у каждого промпта.</p>
+    </div>
+    <div class="card">
+      <h4><a href="tools/">Инструменты и модели курса</a></h4>
+      <p>Сводная таблица сервисов, моделей и платформ из материалов курса:
+         где упомянут, зачем показан, куда идти за ним. С фильтрами и поиском.</p>
+    </div>
+  </div>
+  <footer>
+    Шаблоны, учебные датасеты и ноутбуки практических занятий —
+    в репозитории <a href="https://github.com/wybaeb/sber-a360-materials">wybaeb/sber-a360-materials</a>.
+    Учебные данные синтетические.
+  </footer>
+</div>
+</body>
+</html>
